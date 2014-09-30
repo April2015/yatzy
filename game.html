@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Yatzy</title>
+  <meta name="description" content="TicTacToe game">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="components/angular/angular.js"></script>
+  <script src="game.js"></script>
+  <script src="gameLogic.js"></script>
+  <script src="messageService.js"></script>
+  <!-- for local testing purposes ! -->
+  <script src="http://yoav-zibin.github.io/emulator/platform.js"></script>
+</head>
+<body ng-controller="Ctrl">
+  <textarea ng-model="jsonState" rows=10 cols=100 readonly></textarea>
+  <br/>
+  <table border="1" style="display:inline-block;"> 
+    <tr ng-repeat="(key, value) in dice track by $index">
+      <td width="156px" height="20px">
+        {{key}} showing {{value}}
+      </td>
+    </tr>
+  </table>
+  <div style="clear:both;"></div>
+  <table border="1" style="display:inline-block;">
+    <tr>
+      <td width="100px" height="20px">
+        player 1
+      </td>
+      <td width="50px" height="20px">
+      </td>
+    </tr>
+    <tr ng-repeat="(key, value) in board[0] track by $index">
+      <td width="50px" height="20px">
+        <b>{{key}}</b>
+      </td>
+      <td width="50px" height="20px">
+        {{value}}
+      </td>
+    </tr>
+  </table>
+  <table border="1" style="display:inline-block;">
+    <tr>
+      <td width="100px" height="20px">
+        player 2
+      </td>
+      <td width="50px" height="20px">
+      </td>
+    </tr>
+    <tr ng-repeat="(key, value) in board[1] track by $index">
+      <td width="50px" height="20px">
+        <b>{{key}}</b>
+      </td>
+      <td width="50px" height="20px">
+        {{value}}
+      </td>
+    </tr>
+  </table>
+  <div style="clear:both;"></div>
+  <textarea rows=10 cols=100 readonly>
+    All operations in GameApi:
+    [
+      {setTurn: {turnIndex: 1}},
+      {set: {key: "k", value: "v"}},
+      {endMatch: {endMatchScores: [42, -2]}},
+      {set: {key: "k", value: "v", visibleToPlayerIndexes: [0]}},
+      {setVisibility: {key: "k", visibleToPlayerIndexes: null}},
+      {shuffle: {keys: ["k1", "k2"]}},
+      {setRandomInteger: {key: "k", from: 0, to: 6}},
+      {"delete": {key: "k"}}
+    ]
+  </textarea>
+  <textarea ng-model="move" rows=10 cols=100></textarea>
+  <br>
+  <button ng-click="makeMove()">Make move</button>
+</body>
+</html>

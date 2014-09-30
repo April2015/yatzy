@@ -1,46 +1,16 @@
-/*jslint devel: true, indent: 2 */
-/*global console */
-var yatzy = (function () {
-  'use strict';
+'use strict';
+
+angular.module('myApp.gameLogic', []).service('gameLogic', function() {
 
   //global scoreboard variable
   var totalScore;
 
   function isEqual(object1, object2) {
-    if (object1 === object2) {
-      return true;
-    }
-    if (typeof object1 != 'object' && typeof object2 != 'object') {
-      return object1 == object2;
-    }
-    try {
-      var keys1 = Object.keys(object1);
-      var keys2 = Object.keys(object2);
-      var i, key;
+    return angular.equals(object1, object2);
+  }
 
-      if (keys1.length != keys2.length) {
-        return false;
-      }
-      //the same set of keys (although not necessarily the same order),
-      keys1.sort();
-      keys2.sort();
-      // key test
-      for (i = keys1.length - 1; i >= 0; i--) {
-        if (keys1[i] != keys2[i]){
-          return false;
-        }
-      }
-      // equivalent values for every corresponding key
-      for (i = keys1.length - 1; i >= 0; i--) {
-        key = keys1[i];
-        if (!isEqual(object1[key], object2[key])) {
-          return false;
-        }
-      }
-      return true;
-    } catch (e) {
-      return false;
-    }
+  function copyObject(object) {
+    return angular.copy(object);
   }
 
   function getWinner(board) {
@@ -94,7 +64,7 @@ var yatzy = (function () {
           fullHouse: null, 
           smallStraight: null, 
           largeStraight: null, 
-          yahtzee: null,
+          yatzy: null,
           chance: null, 
           bonus: 0
         }, 
@@ -110,25 +80,26 @@ var yatzy = (function () {
           fullHouse: null, 
           smallStraight: null, 
           largeStraight: null, 
-          yahtzee: null,
+          yatzy: null,
           chance: null, 
           bonus: 0
         }
       ];
     }
-    var boardAfterMove = JSON.parse(JSON.stringify(board));
+    var boardAfterMove = copyObject(board);
 
     boardAfterMove[turnIndex][scoreCategory] = score;
 
     var winner = getWinner(boardAfterMove);
-    var firstOp;
+    var secondOp;
 
     if (winner !== -1 || isTie(boardAfterMove)) {
-      firstOp = {endMatch: {endMatchScores: totalScore}};
+      secondOp = {endMatch: {endMatchScores: totalScore}};
     } else {
-      firstOp = {setTurn: {turnIndex: 1 - turnIndex}};
+      secondOp = {setTurn: {turnIndex: 1 - turnIndex}};
     }
-    return [firstOp, 
+    return [{set: {key: "diceRoll", value: false}},
+            secondOp, 
             {set: {key: "board", value: boardAfterMove}},
             {set: {key: "delta", value: {category: scoreCategory, score: score}}}];
   }
@@ -136,8 +107,8 @@ var yatzy = (function () {
   /* dice is a JSON object representing the current state of the dice
    * resrolls is an array representing the dice that need to be rolled (or rolled again)
   */
-  function createRollMove(dice, rerolls) {
-    var move = [];
+  function createRollMove(dice, rerolls, rollNumber, turnIndex) {
+    var move = [{set: {key: "diceRoll", value: true}}, {set: {key: "rollNumber", value: rollNumber}}, {setTurn: {turnIndex: turnIndex}}];
     if(dice.d0 === undefined){
       dice.d0 = null;
     }
@@ -168,39 +139,37 @@ var yatzy = (function () {
   function getExampleMoves(initialTurnIndex, initialState, arrayOfDiceRollsAndScoringMoves) {
     var exampleMoves = [];
     var state = initialState;
-    var diceState;
     var turnIndex = initialTurnIndex;
-    var statesArray = [{},{d0:5, d1:5, d2:5, d3:2, d4:3},{d0:5, d1:3, d2:3, d3:5, d4:3},{d0:1, d1:3, d2:4, d3:5, d4:6},{d0:1, d1:3, d2:4, d3:5, d4:6},{d0:2, d1:3, d2:4, d3:5, d4:3},{d0:5, d1:5, d2:6, d3:5, d4:4},{d0:5, d1:3, d2:3, d3:5, d4:6},{d0:5, d1:3, d2:3, d3:5, d4:3},{d0:6, d1:6, d2:3, d3:5, d4:6},{d0:3, d1:4, d2:1, d3:5, d4:6},{d0:3, d1:4, d2:4, d3:5, d4:6},{d0:5, d1:4, d2:4, d3:5, d4:6},{d0:5, d1:3, d2:3, d3:5, d4:6},{d0:1, d1:2, d2:3, d3:1, d4:2},{d0:1, d1:2, d2:3, d3:1, d4:3},{d0:1, d1:2, d2:3, d3:1, d4:3},{d0:1, d1:2, d2:3, d3:5, d4:3},{d0:1, d1:4, d2:5, d3:5, d4:1},{d0:1, d1:4, d2:5, d3:6, d4:6},{d0:1, d1:4, d2:5, d3:6, d4:6},{d0:2, d1:4, d2:5, d3:6, d4:6},{d0:5, d1:5, d2:5, d3:1, d4:6},{d0:5, d1:5, d2:5, d3:1, d4:5},{d0:4, d1:4, d2:4, d3:1, d4:5},{d0:6, d1:5, d2:6, d3:1, d4:5},{d0:6, d1:5, d2:4, d3:3, d4:5},{d0:4, d1:4, d2:4, d3:3, d4:5},{d0:3, d1:5, d2:3, d3:3, d4:5},{d0:2, d1:2, d2:5, d3:1, d4:6},{d0:2, d1:2, d2:3, d3:2, d4:6},{d0:2, d1:2, d2:3, d3:2, d4:6},{d0:1, d1:2, d2:3, d3:4, d4:5},{d0:2, d1:2, d2:2, d3:3, d4:3},{d0:2, d1:2, d2:2, d3:2, d4:3},{d0:2, d1:2, d2:2, d3:2, d4:3},{d0:5, d1:5, d2:2, d3:3, d4:3},{d0:5, d1:5, d2:2, d3:2, d4:3},{d0:5, d1:5, d2:2, d3:2, d4:3},{d0:1, d1:2, d2:3, d3:4, d4:6},{d0:1, d1:2, d2:3, d3:4, d4:1},{d0:1, d1:2, d2:3, d3:4, d4:1},{d0:4, d1:4, d2:6, d3:4, d4:2},{d0:4, d1:4, d2:4, d3:4, d4:4},{d0:1, d1:1, d2:2, d3:4, d4:3},{d0:1, d1:1, d2:4, d3:2, d4:1},{d0:1, d1:1, d2:4, d3:1, d4:1}];
+    var diceStatesArray = [{},{d0:5, d1:5, d2:5, d3:2, d4:3},{d0:5, d1:3, d2:3, d3:5, d4:3},{d0:1, d1:3, d2:4, d3:5, d4:6},{d0:1, d1:3, d2:4, d3:5, d4:6},{d0:2, d1:3, d2:4, d3:5, d4:3},{d0:5, d1:5, d2:6, d3:5, d4:4},{d0:5, d1:3, d2:3, d3:5, d4:6},{d0:5, d1:3, d2:3, d3:5, d4:3},{d0:6, d1:6, d2:3, d3:5, d4:6},{d0:3, d1:4, d2:1, d3:5, d4:6},{d0:3, d1:4, d2:4, d3:5, d4:6},{d0:5, d1:4, d2:4, d3:5, d4:6},{d0:5, d1:3, d2:3, d3:5, d4:6},{d0:1, d1:2, d2:3, d3:1, d4:2},{d0:1, d1:2, d2:3, d3:1, d4:3},{d0:1, d1:2, d2:3, d3:1, d4:3},{d0:1, d1:2, d2:3, d3:5, d4:3},{d0:1, d1:4, d2:5, d3:5, d4:1},{d0:1, d1:4, d2:5, d3:6, d4:6},{d0:1, d1:4, d2:5, d3:6, d4:6},{d0:2, d1:4, d2:5, d3:6, d4:6},{d0:5, d1:5, d2:5, d3:1, d4:6},{d0:5, d1:5, d2:5, d3:1, d4:5},{d0:4, d1:4, d2:4, d3:1, d4:5},{d0:6, d1:5, d2:6, d3:1, d4:5},{d0:6, d1:5, d2:4, d3:3, d4:5},{d0:4, d1:4, d2:4, d3:3, d4:5},{d0:3, d1:5, d2:3, d3:3, d4:5},{d0:2, d1:2, d2:5, d3:1, d4:6},{d0:2, d1:2, d2:3, d3:2, d4:6},{d0:2, d1:2, d2:3, d3:2, d4:6},{d0:1, d1:2, d2:3, d3:4, d4:5},{d0:2, d1:2, d2:2, d3:3, d4:3},{d0:2, d1:2, d2:2, d3:2, d4:3},{d0:2, d1:2, d2:2, d3:2, d4:3},{d0:5, d1:5, d2:2, d3:3, d4:3},{d0:5, d1:5, d2:2, d3:2, d4:3},{d0:5, d1:5, d2:2, d3:2, d4:3},{d0:1, d1:2, d2:3, d3:4, d4:6},{d0:1, d1:2, d2:3, d3:4, d4:1},{d0:1, d1:2, d2:3, d3:4, d4:1},{d0:4, d1:4, d2:6, d3:4, d4:2},{d0:4, d1:4, d2:4, d3:4, d4:4},{d0:1, d1:1, d2:2, d3:4, d4:3},{d0:1, d1:1, d2:4, d3:2, d4:1},{d0:1, d1:1, d2:4, d3:1, d4:1}];
     var rollCounter = 0;
-    var newState;
+    var newState = state;
 
     for (var i = 0; i < arrayOfDiceRollsAndScoringMoves.length; i++) {
       var diceRollOrScoringMove = arrayOfDiceRollsAndScoringMoves[i];
       var move;
-
+      
       if(diceRollOrScoringMove.diceRoll){
-        diceState = statesArray[rollCounter];
-        newState = statesArray[rollCounter+1];
         // for moves that involve rolling / re rolling the dice
-        move = createRollMove(diceState, diceRollOrScoringMove.rerolls);
+        move = createRollMove({d0: state.d0, d1: state.d1, d2: state.d2, d3: state.d3, d4: state.d4}, diceRollOrScoringMove.rerolls, diceRollOrScoringMove.rollNumber, turnIndex);
+        newState = {diceRoll: true, rollNumber:diceRollOrScoringMove.rollNumber, board: state.board, delta: state.delta, d0: diceStatesArray[rollCounter+1].d0, d1: diceStatesArray[rollCounter+1].d1, d2: diceStatesArray[rollCounter+1].d2, d3: diceStatesArray[rollCounter+1].d3, d4: diceStatesArray[rollCounter+1].d4};
         exampleMoves.push({
           diceRoll: true,
-          stateBeforeMove: diceState,
+          stateBeforeMove: state,
           stateAfterMove: newState,
           turnIndexBeforeMove: turnIndex,
           turnIndexAfterMove: turnIndex,
           rollNumber: diceRollOrScoringMove.rollNumber,
           move: move,
           comment: {en: diceRollOrScoringMove.comment} 
-          // stateAfterMove: diceState,
         });
         // counter for adding start and end states for each roll move
+        state = newState;
         rollCounter++;
         //turnIndex does not change for a roll
       }else{
         // for moves that invovle scoring in a specific category 
         move = createMove(state.board, diceRollOrScoringMove.category, turnIndex, diceRollOrScoringMove.score);
-        newState = {board : move[1].set.value, delta: move[2].set.value};
+        newState = {diceRoll: false, rollNumber:diceRollOrScoringMove.rollNumber, board: move[2].set.value, delta: move[3].set.value, d0: state.d0, d1: state.d1, d2: state.d2, d3: state.d3, d4: state.d4};
         exampleMoves.push({
           diceRoll: false,
           stateBeforeMove: state,
@@ -210,7 +179,6 @@ var yatzy = (function () {
           move: move,
           comment: {en: diceRollOrScoringMove.comment}
         });
-
         state = newState;
         turnIndex = 1 - turnIndex;
       }
@@ -312,12 +280,12 @@ var yatzy = (function () {
       {diceRoll: false, category: "threeKind", score: 20, comment: "player 2 elects to score in the three of a kind category."},
       //13
       {diceRoll: true, rollNumber: 1, dice: {}, rerolls: ["d0", "d1", "d2", "d3", "d4"], comment: "player 1 rolls the 5 dice"},
-      {diceRoll: false, category: "yahtzee", score: 50, comment: "player 1 elects to score in the yahtzee category."},
+      {diceRoll: false, category: "yatzy", score: 50, comment: "player 1 elects to score in the yatzy category."},
       //13
       {diceRoll: true, rollNumber: 1, dice: {}, rerolls: ["d0", "d1", "d2", "d3", "d4"], comment: "player 2 rolls the 5 dice"},
       {diceRoll: true, rollNumber: 2, dice: {d0:1, d1:1, d2:2, d3:4, d4:3}, rerolls: ["d2", "d3", "d4"], comment: "player 2 re-rolls 3 of the dice"},
       {diceRoll: true, rollNumber: 3, dice: {d0:1, d1:1, d2:4, d3:2, d4:1}, rerolls: ["d2", "d3", "d4"], comment: "player 2 re-rolls 3 of the dice"},
-      {diceRoll: false, category: "yahtzee", score: 0, comment: "player 2 elects to score in the fours category. the game terminates."},
+      {diceRoll: false, category: "yatzy", score: 0, comment: "player 2 elects to score in the fours category. the game terminates."}
     ]);
   }
 
@@ -329,8 +297,8 @@ var yatzy = (function () {
     try {
       // EXAMPLE MOVE: 
       // [{setTurn: {turnIndex: 1}},
-      //     {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yahtzee: null, chance: null, bonus: null}, 
-      //                                 {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yahtzee: null, chance: null, bonus: null}]}},
+      //     {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, 
+      //                                 {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}]}},
       //     {set: {key: "delta", value: {category: "fullHouse", score: 25}}}
       // ]
 
@@ -342,30 +310,32 @@ var yatzy = (function () {
       //     {setRandomInteger: {key: "d4", from: 0, to: 6}},
       //   ]
 
-      if(params.diceRoll) {
-        
-        var rollNumber = params.rollNumber;
+      // check if this is a dice rolling move
+      if(move[0].set.value) {
 
+        var rollNumber = move[1].set.value;
+        
         //can't roll more than 5 dice, can have up to 2 re-rolls
-        if(move.length !== 5 || rollNumber > 3){
+        if(move.length !== 8 || rollNumber > 3){
           return false;
         }
+
         var rerolls = [];
         var i;
-        for(i = 0; i < 5; i++){
+        for(i = 3; i < 8; i++){
           if(move[i].setRandomInteger !== undefined){
             rerolls.push(move[i].setRandomInteger.key);
           }
         }
 
-        var dice = stateBeforeMove;
-        var expectedMove = createRollMove(dice, rerolls);
-
+        var dice = {d0: stateBeforeMove.d0, d1: stateBeforeMove.d1, d2: stateBeforeMove.d2, d3: stateBeforeMove.d3, d4: stateBeforeMove.d4};
+        var expectedMove = createRollMove(dice, rerolls, rollNumber, turnIndexBeforeMove);
         if (!isEqual(move, expectedMove)) {
           return false;
         }
+
       }else{
-        var deltaValue = move[2].set.value;
+        var deltaValue = move[3].set.value;
         var scoreCategory = deltaValue.category;
         var score = deltaValue.score;  
 
@@ -384,11 +354,12 @@ var yatzy = (function () {
       }
     } catch (e) {
       // not a valid move if any exceptions are thrown
-      console.log("invalid move");
+      console.log("Invalid move.");
       return false;
     }
     return true;
   }
 
-  return {isMoveOk: isMoveOk, getExampleGame: getExampleGame};;
-})();
+  this.isMoveOk = isMoveOk;
+  this.getExampleGame = getExampleGame;
+});
