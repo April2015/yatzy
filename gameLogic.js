@@ -13,6 +13,206 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     return angular.copy(object);
   }
 
+  function determineValueOfScore(category, dice){
+    var value = 0;
+    if(category == "ones"){
+      for(var d in dice){
+        if(dice[d] == 1){
+          value++;
+        }
+      }
+    }else if(category == "twos"){
+      for(var d in dice){
+        if(dice[d] == 2){
+          value+=2;
+        }
+      }
+    }else if(category == "threes"){
+      for(var d in dice){
+        if(dice[d] == 3){
+          value+=3;
+        }
+      }
+    }else if(category == "fours"){
+      for(var d in dice){
+        if(dice[d] == 4){
+          value+=4;
+        }
+      }
+    }else if(category == "fives"){
+      for(var d in dice){
+        if(dice[d] == 5){
+          value+=5;
+        }
+      }
+    }else if(category == "sixes"){
+      for(var d in dice){
+        if(dice[d] == 6){
+          value+=6;
+        }
+      }
+    }else if(category == "threeKind"){
+      var tempvalue = 0;
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        tempvalue += dice[d];
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      for(var d in counts){
+        if(counts[d] >= 3){
+          value = tempvalue;
+        }
+      }
+    }else if(category == "fourKind"){
+      var tempvalue = 0;
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        tempvalue += dice[d];
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      for(var d in counts){
+        if(counts[d] >= 4){
+          value = tempvalue;
+        }
+      }
+    }else if(category == "smallStraight"){
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      if((counts["ones"] >= 1 && counts["twos"] >= 1 && counts["threes"] >= 1 && counts["fours"] >= 1)
+        ||(counts["twos"] >= 1 && counts["threes"] >= 1 && counts["fours"] >= 1 && counts["fives"] >= 1)
+        ||(counts["threes"] >= 1 && counts["fours"] >= 1 && counts["fives"] >= 1 && counts["sixes"] >= 1)){
+        value = 30;
+      }
+    }else if(category == "largeStraight"){
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      if((counts["ones"] >= 1 && counts["twos"] >= 1 && counts["threes"] >= 1 && counts["fours"] >= 1  && counts["fives"] >= 1)
+        ||(counts["twos"] >= 1 && counts["threes"] >= 1 && counts["fours"] >= 1 && counts["fives"] >= 1  && counts["sixes"] >= 1)){
+        value = 40;
+      }
+    }else if(category == "fullHouse"){
+      var tempvalue = 0;
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        tempvalue += dice[d];
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      var threeK, twoK = false;
+      for(var d in counts){
+        if(counts[d] == 3){
+          threeK = true;
+        }else if(counts[d] == 2){
+          twoK = true;
+        }
+      }
+      if(threeK && twoK){
+        value = 25;
+      }
+    }else if(category == "yatzy"){
+      var counts = {ones: 0, twos: 0, threes: 0, fours: 0, fives: 0, sixes: 0};
+      for(var d in dice){
+        if(dice[d] == 1){
+          counts.ones++;
+        }else if(dice[d] == 2){
+          counts.twos++;
+        }else if(dice[d] == 3){
+          counts.threes++;
+        }else if(dice[d] == 4){
+          counts.fours++;
+        }else if(dice[d] == 5){
+          counts.fives++;
+        }else if(dice[d] == 6){
+          counts.sixes++;
+        }
+      }
+      for(var d in counts){
+        if(counts[d] == 5){
+          value = 50;
+        }
+      }
+    }else if(category == "chance"){
+      for(var d in dice){
+        value += dice[d];
+      }
+    }
+
+    return value;
+  }
+
+  function checkForBonus(board, turnIndex, score, addScore){
+    var playersBoard = board[turnIndex];
+    var total = playersBoard.ones + playersBoard.twos + playersBoard.threes + playersBoard.fours + playersBoard.fives + playersBoard.sixes;
+    if((addScore && (total + score) >= 63) || (total >= 63)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   function getWinner(board) {
     totalScore = [0, 0];
     var i, category;
@@ -49,9 +249,8 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     
   }
 
-  function createMove(board, scoreCategory, turnIndex, score) {
-    if (board === undefined) {
-      board = [
+  function getInitialBoard(){
+    return [
         {
           ones: null, 
           twos: null, 
@@ -85,7 +284,19 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
           bonus: 0
         }
       ];
+  }
+
+  function createMove(board, scoreCategory, turnIndex, dice) {
+    if (board === undefined) {
+      board = getInitialBoard();
     }
+
+    var score = determineValueOfScore(scoreCategory, dice);
+    
+    if(checkForBonus(board, turnIndex, score, (scoreCategory == "ones" || scoreCategory == "ones" || scoreCategory == "threes" || scoreCategory == "fours" || scoreCategory == "fives" || scoreCategory == "sixes"))){
+      board[turnIndex].bonus = 35;
+    }
+    
     var boardAfterMove = copyObject(board);
 
     boardAfterMove[turnIndex][scoreCategory] = score;
@@ -124,10 +335,15 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     if(dice.d4 === undefined){
       dice.d4 = null;
     }
+
+    if(rollNumber > 3){
+      throw new Error("You are out of rolls");
+    }
+
     var s;
     for (s in dice) {
       if(rerolls.indexOf(s) !== -1){
-        move.push({setRandomInteger: {key: s, from: 0, to: 6}});
+        move.push({setRandomInteger: {key: s, from: 1, to: 7}});
       } else {
         move.push({set: {key: s, value: dice[s]}});
       }
@@ -168,7 +384,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         //turnIndex does not change for a roll
       }else{
         // for moves that invovle scoring in a specific category 
-        move = createMove(state.board, diceRollOrScoringMove.category, turnIndex, diceRollOrScoringMove.score);
+        move = createMove(state.board, diceRollOrScoringMove.category, turnIndex, {d0: state.d0, d1: state.d1, d2: state.d2, d3: state.d3, d4: state.d4});
         newState = {diceRoll: false, rollNumber:diceRollOrScoringMove.rollNumber, board: move[2].set.value, delta: move[3].set.value, d0: state.d0, d1: state.d1, d2: state.d2, d3: state.d3, d4: state.d4};
         exampleMoves.push({
           diceRoll: false,
@@ -303,16 +519,15 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
       // ]
 
       // EXAMPLE DICE ROLL MOVE:
-      //  [{setRandomInteger: {key: "d0", from: 0, to: 6}},
-      //     {setRandomInteger: {key: "d1", from: 0, to: 6}},
-      //     {setRandomInteger: {key: "d2", from: 0, to: 6}},
-      //     {setRandomInteger: {key: "d3", from: 0, to: 6}},
-      //     {setRandomInteger: {key: "d4", from: 0, to: 6}},
+      //  [{setRandomInteger: {key: "d0", from: 1, to: 7}},
+      //     {setRandomInteger: {key: "d1", from: 1, to: 7}},
+      //     {setRandomInteger: {key: "d2", from: 1, to: 7}},
+      //     {setRandomInteger: {key: "d3", from: 1, to: 7}},
+      //     {setRandomInteger: {key: "d4", from: 1, to: 7}},
       //   ]
 
       // check if this is a dice rolling move
       if(move[0].set.value) {
-
         var rollNumber = move[1].set.value;
         
         //can't roll more than 5 dice, can have up to 2 re-rolls
@@ -338,16 +553,19 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         var deltaValue = move[3].set.value;
         var scoreCategory = deltaValue.category;
         var score = deltaValue.score;  
+        var dice = {d0: stateBeforeMove.d0, d1: stateBeforeMove.d1, d2: stateBeforeMove.d2, d3: stateBeforeMove.d3, d4: stateBeforeMove.d4};
 
         // game state is represented as two scoreboards, one for player 1, the oher for player 2
         var board = stateBeforeMove.board;
-        var expectedMove = createMove(board, scoreCategory, turnIndexBeforeMove, score);
-
+        var expectedMove = createMove(board, scoreCategory, turnIndexBeforeMove, dice);
         // must score in an unscored category
         if(board !== undefined && board[turnIndexBeforeMove][scoreCategory] !== null){
           return false;
         }
 
+        if(checkForBonus(move[2].set.value, turnIndexBeforeMove, score, false)){
+          move[2].set.value[turnIndexBeforeMove].bonus = 35
+        }
         if (!isEqual(move, expectedMove)) {
           return false;
         }
@@ -360,6 +578,9 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     return true;
   }
 
+  this.getInitialBoard = getInitialBoard;
+  this.createMove = createMove;
+  this.createRollMove = createRollMove;
   this.isMoveOk = isMoveOk;
   this.getExampleGame = getExampleGame;
 });

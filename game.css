@@ -1,0 +1,119 @@
+body{
+  background-color: #FFFCD6;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0;
+}
+tr, td {
+  margin: 0px;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font
+}
+
+#game {
+  width: 350px;
+  font-family: sans-serif;
+  text-align: center;
+  color: #FFFCD6;
+}
+
+#score-sheets {
+  background-color: #CCC66E;
+}
+
+#p1{
+  float: left;
+  border-right: #7F7E6B solid 1pt;
+}
+#p2{
+  float: right;
+  border-left: #7F7E6B solid 1pt;
+}
+
+.cell {
+  text-align: left;
+  font-size: 8pt;
+  width: 81px;
+  height: 6px;
+  margin: 0px;
+  padding: 5px 0 5px 5px;
+  border: 1px solid #7F7E6B;
+}
+
+table tr:first-child td{
+  border-top: 0;
+}
+
+table tr:last-child td {
+  border-bottom: 0;
+}
+table tr td:first-child{
+  border-left: 0;
+}
+table tr td:last-child{
+  border-right: 0;
+}
+
+.center{
+  text-align: center;
+}
+
+
+img {
+  width: 40px;
+}
+
+#dice{
+  border-top: solid #7F7E6B 1pt;
+  position: relative;
+  text-align: left;
+  border-collapse: collapse;
+  height: 173px;
+  background-color: #7F7E6B;
+}
+
+#dice div span {
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  margin: 0;
+  color: rgba(127, 126, 107, .45);
+  font-size: 18pt;
+}
+
+.di {
+  display: inline-block;
+  height:30px;
+  margin: 0 8px 0 0;
+}
+
+.reroll {
+  height: 40px;
+  padding: 10px;
+  position: relative;
+  background-color: #FFFCD6;
+}
+.keep {
+  height: 40px;
+  padding: 10px;
+  position: relative;
+  background-color: #FFF889;
+}
+
+.button {
+  display: block;
+  margin: 10px auto;
+  background-color: #FFFCD6;
+  color: #7F7E6B;
+  width: 150px;
+  height: 25px;
+  text-align: center;
+  cursor: pointer;
+  padding-top: 5px;
+}
