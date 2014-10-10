@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.gameLogic', []).service('gameLogic', function() {
+angular.module('myApp').service('gameLogic', function() {
 
   //global scoreboard variable
   var totalScore;
@@ -286,33 +286,29 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
       ];
   }
 
-  function createMove(board, scoreCategory, turnIndex, dice) {
-    if (board === undefined) {
-      board = getInitialBoard();
+  function createComputerRollMove(board, dice, turnIndex, rollNumber){
+    // roll all the dice
+    return createRollMove(dice, ["d0", "d1", "d2", "d3", "d4"], rollNumber, turnIndex);
+  }
+
+  function createComputerMove(board, turnIndexBeforeMove, dice){
+    // score in the best category you can!
+    var scoreCategory = "";
+    var bestScore = -1;
+    var move;
+    for(var cat in board[0]){
+      try{
+        if(createMove(board, cat, turnIndexBeforeMove, dice)){
+          if(determineValueOfScore(cat, dice) > bestScore || bestScore == -1){
+            scoreCategory = cat;
+            bestScore = determineValueOfScore(cat, dice);
+          }
+        }  
+      }catch(e){
+        //already scored in that category
+      }
     }
-
-    var score = determineValueOfScore(scoreCategory, dice);
-    
-    if(checkForBonus(board, turnIndex, score, (scoreCategory == "ones" || scoreCategory == "ones" || scoreCategory == "threes" || scoreCategory == "fours" || scoreCategory == "fives" || scoreCategory == "sixes"))){
-      board[turnIndex].bonus = 35;
-    }
-    
-    var boardAfterMove = copyObject(board);
-
-    boardAfterMove[turnIndex][scoreCategory] = score;
-
-    var winner = getWinner(boardAfterMove);
-    var secondOp;
-
-    if (winner !== -1 || isTie(boardAfterMove)) {
-      secondOp = {endMatch: {endMatchScores: totalScore}};
-    } else {
-      secondOp = {setTurn: {turnIndex: 1 - turnIndex}};
-    }
-    return [{set: {key: "diceRoll", value: false}},
-            secondOp, 
-            {set: {key: "board", value: boardAfterMove}},
-            {set: {key: "delta", value: {category: scoreCategory, score: score}}}];
+    return createMove(board, scoreCategory, turnIndexBeforeMove, dice);
   }
 
   /* dice is a JSON object representing the current state of the dice
@@ -349,6 +345,39 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
       }
     }
     return move;
+  }
+
+  function createMove(board, scoreCategory, turnIndex, dice) {
+    if (board === undefined) {
+      board = getInitialBoard();
+    }
+
+    if(board[turnIndex][scoreCategory] !== null){
+      throw new Error("Can only score once in that category!");
+    }
+
+    var score = determineValueOfScore(scoreCategory, dice);
+    
+    if(checkForBonus(board, turnIndex, score, (scoreCategory == "ones" || scoreCategory == "ones" || scoreCategory == "threes" || scoreCategory == "fours" || scoreCategory == "fives" || scoreCategory == "sixes"))){
+      board[turnIndex].bonus = 35;
+    }
+    
+    var boardAfterMove = copyObject(board);
+
+    boardAfterMove[turnIndex][scoreCategory] = score;
+
+    var winner = getWinner(boardAfterMove);
+    var secondOp;
+
+    if (winner !== -1 || isTie(boardAfterMove)) {
+      secondOp = {endMatch: {endMatchScores: totalScore}};
+    } else {
+      secondOp = {setTurn: {turnIndex: 1 - turnIndex}};
+    }
+    return [{set: {key: "diceRoll", value: false}},
+            secondOp, 
+            {set: {key: "board", value: boardAfterMove}},
+            {set: {key: "delta", value: {category: scoreCategory, score: score}}}];
   }
 
   /** Returns an array of {stateBeforeMove, stateAfterMove, move, comment}. */
@@ -564,7 +593,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         }
 
         if(checkForBonus(move[2].set.value, turnIndexBeforeMove, score, false)){
-          move[2].set.value[turnIndexBeforeMove].bonus = 35
+          move[2].set.value[turnIndexBeforeMove].bonus = 35;
         }
         if (!isEqual(move, expectedMove)) {
           return false;
@@ -581,6 +610,8 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
   this.getInitialBoard = getInitialBoard;
   this.createMove = createMove;
   this.createRollMove = createRollMove;
+  this.createComputerMove = createComputerMove;
+  this.createComputerRollMove = createComputerRollMove;
   this.isMoveOk = isMoveOk;
   this.getExampleGame = getExampleGame;
 });

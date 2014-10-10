@@ -4,10 +4,10 @@ module.exports = function(config){
     basePath : './',
 
     files : [
-      'components/angular/angular.js',
-      'components/angular-route/angular-route.js',
-      'components/angular-resource/angular-resource.js',
-      'components/angular-mocks/angular-mocks.js',
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js',
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.js',
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-mocks.js',
+      'http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js',
       '*.js'
     ],
 
@@ -34,16 +34,9 @@ module.exports = function(config){
 
     plugins : [
             'karma-chrome-launcher',
-            'karma-firefox-launcher',
             'karma-jasmine',
-            'karma-coverage',
-            'karma-junit-reporter'
-            ],
-
-    junitReporter : {
-      outputFile: 'test_out/unit.xml',
-      suite: 'unit'
-    }
+            'karma-coverage'
+            ]
 
   });
 };

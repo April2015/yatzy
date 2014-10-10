@@ -1,5 +1,13 @@
+html{
+  /*this is a weird hack because scaleBodyService is causing unpredictable behavior*/
+  height:0px;
+}
 body{
   background-color: #FFFCD6;
+  margin: 0px;
+  padding: 0px;
+  width: 350px;
+  height:519px;
 }
 
 table {
@@ -10,14 +18,7 @@ tr, td {
   margin: 0px;
 }
 
-body {
-  margin: 0px;
-  padding: 0px;
-  font
-}
-
 #game {
-  width: 350px;
   font-family: sans-serif;
   text-align: center;
   color: #FFFCD6;
@@ -32,18 +33,27 @@ body {
   border-right: #7F7E6B solid 1pt;
 }
 #p2{
-  float: right;
-  border-left: #7F7E6B solid 1pt;
+  float: left;
+  margin-left: -1px;
 }
 
 .cell {
   text-align: left;
   font-size: 8pt;
-  width: 81px;
+  width: 82px;
   height: 6px;
   margin: 0px;
   padding: 5px 0 5px 5px;
   border: 1px solid #7F7E6B;
+}
+
+.clickable{
+  padding: 0;
+  cursor: pointer;
+}
+
+.split {
+  border-bottom: solid 2pt #7F7E6B;
 }
 
 table tr:first-child td{
@@ -67,6 +77,8 @@ table tr td:last-child{
 
 img {
   width: 40px;
+  z-index: 100;
+  position: relative;
 }
 
 #dice{
@@ -116,4 +128,28 @@ img {
   text-align: center;
   cursor: pointer;
   padding-top: 5px;
+}
+
+.cellDiv {
+  width: 100%;
+  height: 100%;
+  padding: 5px 0 0 0;
+  border:none;
+}
+
+.dropIn{
+  background-color: #7F7E6B;
+  -webkit-animation: slowlyAppear   1s linear; /* Chrome, Safari, Opera */
+  animation: slowlyAppear 1s linear;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes slowlyAppear {
+  from {background-color: #CCC66E;}
+  to {background-color: #7F7E6B;}
+}
+
+/* Standard syntax */
+@keyframes slowlyAppear {
+  from {background-color: #CCC66E;}
+  to {background-color: #7F7E6B;}
 }

@@ -1,7 +1,7 @@
 describe("In Yatzy", function() {
   var yatzy;
 
-  beforeEach(module("myApp.gameLogic"));
+  beforeEach(module("myApp"));
 
   beforeEach(inject(function (gameLogic) {
     yatzyLogic = gameLogic;

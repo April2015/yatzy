@@ -1,19 +1,37 @@
 'use strict';
 
-// TODO: remove stateService before launching the game.
-angular.module('myApp',
-    ['myApp.messageService', 'myApp.gameLogic', 'myApp.scaleBodyService', 'platformApp'])
+angular.module('myApp', ['ngTouch', 'ngDragDrop'])
   .controller('Ctrl', function (
-      $window, $scope, $log,
-      messageService, scaleBodyService, stateService, gameLogic) {
-
-    var isLocalTesting = $window.parent === $window;
+      $window, $scope, $log, $timeout,
+      gameService, scaleBodyService, gameLogic) {
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
+
+    var rollSoundEff = new Audio('audio/roll.mp3');
+    var moveSoundEff = new Audio('audio/move.mp3');
+    rollSoundEff.load();
+    moveSoundEff.load();
+
+    function sendComputerRollMove() {
+      rollSoundEff.play();
+      $timeout(function(){
+        gameService.makeMove(gameLogic.createComputerRollMove($scope.board, $scope.dice, $scope.turnIndex, $scope.rollNumber));
+      },2100);
+      $scope.computerRolled = true;
+    }
+    function sendComputerMove() {
+      moveSoundEff.play();
+      $timeout(function(){
+        gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
+      },500);
+      $scope.rollNumber = 1;
+      $scope.computerRolled = false;
+    }
 
     function updateUI(params) {
       $scope.jsonState = angular.toJson(params.stateAfterMove, true);
       $scope.board = params.stateAfterMove.board;
+      $scope.delta = params.stateAfterMove.delta;
       $scope.dice = {};
       if($scope.rerolls === undefined){
         $scope.rerolls = ["d0", "d1", "d2", "d3", "d4"];
@@ -55,98 +73,128 @@ angular.module('myApp',
       $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
       $scope.turnIndex = params.turnIndexAfterMove;
-    }
-
-    function sendMakeMove(move) {
-      $log.info(["Making move:", move]);
-      if (isLocalTesting) {
-        stateService.makeMove(move);
-      } else {
-        messageService.sendMessage({makeMove: move});
+      
+      // Is it the computer's turn?
+      if ($scope.isYourTurn
+          && params.playersInfo[params.yourPlayerIndex].playerId === '') {
+        // Wait 500 milliseconds until animation ends.
+        if(!$scope.computerRolled){
+          $timeout(sendComputerRollMove, 3000);
+        }else{
+          $timeout(sendComputerMove, 3000);
+        }
       }
     }
-
-    // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
-    updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
-    var game = {
-      gameDeveloperEmail: "img236@nyu.edu",
-      minNumberOfPlayers: 2,
-      maxNumberOfPlayers: 2,
-      exampleGame: gameLogic.getExampleGame()
-    };
-
-    var isLocalTesting = $window.parent === $window;
-    // a scoring move
-    $scope.move = "[{set: {key: 'diceRoll', value: false}}, {setTurn: {turnIndex: 1}}, {set: {key: 'board', value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}, {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}]}}, {set: {key: 'delta', value: {category: 'fullHouse', score: 25}}}]";
-    // a dice rolling move
-    // $scope.move = "[{set: {key: 'diceRoll', value: true}}, {set: {key: 'rollNumber', value: 1}},{setTurn: {turnIndex: 0}}, {setRandomInteger: {key: 'd0', from: 0, to: 6}},{setRandomInteger: {key: 'd1', from: 0, to: 6}},{setRandomInteger: {key: 'd2', from: 0, to: 6}},{setRandomInteger: {key: 'd3', from: 0, to: 6}},{setRandomInteger: {key: 'd4', from: 0, to: 6}},]";
     
     $scope.scoreInCategory = function (category, playerId) {
-      $log.info(["Score in category", category, playerId]);
-      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus") {
+      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling) {
         return;
       }
       if($scope.rollNumber == 1){
         $log.info(["You must roll the dice first!"]);
         return;
       }
+      $log.info(["Score in category", category, playerId]);
       try {
         var move = gameLogic.createMove($scope.board, category, $scope.turnIndex, $scope.dice);
         $scope.isYourTurn = false; // to prevent making another move
         $scope.rollNumber = 1;
         $scope.rerolls = undefined;
-        // TODO: show animations and only then send makeMove.
-        sendMakeMove(move);
+
+        moveSoundEff.play();
+        $timeout(function(){
+          gameService.makeMove(move);  
+        },500);
       } catch (e) {
         $log.info(["You've already scored here:", category, playerId]);
         return;
       }
     };
 
+    $scope.doneRolling = false;
     $scope.rollDice = function () {
       $log.info(["Roll dice:", $scope.rerolls]);
       if (!$scope.isYourTurn) {
         return;
       }
       try {
+        $scope.doneRolling = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);
         $scope.rollNumber++;
-        // TODO: show animations and only then send makeMove.
-        sendMakeMove(move);
+        rollSoundEff.play();
+        $timeout(function(){
+          gameService.makeMove(move);  
+          $scope.doneRolling = true;
+        }, 2100);
       } catch (e) {
         $log.info(["No more rolls:", $scope.rollNumber]);
         return;
       }
     };
     
-    $scope.setReroll = function (dIndex) {
+    $scope.setReroll = function (dIndex, setTo) {
+
       if($scope.rollNumber == 1){
         // you have to roll all of the dice
         return;
-      }      
-      if($scope.rerolls.indexOf("d" + dIndex) > -1){
+      }    
+      if(setTo == -1){
+        if($scope.dragging){
+          $scope.dragging = false;
+          return;  
+        }else{
+          if($scope.rerolls.indexOf("d" + dIndex) != -1){
+            $scope.rerolls.splice($scope.rerolls.indexOf("d" + dIndex),1);
+          }else{            
+            $scope.rerolls.push("d" + dIndex);
+          }
+        }
+        return;
+      }  
+      if(setTo == 0){
+        if($scope.rerolls.indexOf("d" + dIndex) == -1){
+          return;
+        }
         $scope.rerolls.splice($scope.rerolls.indexOf("d" + dIndex),1);
       }else{
+        if($scope.rerolls.indexOf("d" + dIndex) != -1){
+          return;
+        }
         $scope.rerolls.push("d" + dIndex);
       }
     };
 
-    scaleBodyService.scaleBody({width: 350, height: 518});
-
-    if (isLocalTesting) {
-      game.isMoveOk = gameLogic.isMoveOk;
-      game.updateUI = updateUI;
-      stateService.setGame(game);
-    } else {
-      messageService.addMessageListener(function (message) {
-        if (message.isMoveOk !== undefined) {
-          var isMoveOkResult = gameLogic.isMoveOk(message.isMoveOk);
-          messageService.sendMessage({isMoveOkResult: isMoveOkResult});
-        } else if (message.updateUI !== undefined) {
-          updateUI(message.updateUI);
-        }
-      });
-
-      messageService.sendMessage({gameReady : game});
+    $scope.shouldDropIn = function (key, playerId) {
+      return $scope.delta !== undefined && $scope.delta.category === key && $scope.turnIndex != playerId;
     }
+
+    $scope.dragging = false;
+    $scope.onStartCallback = function () {
+      $scope.dragging = true;
+      var index = arguments[1]["helper"][0]["name"];
+    };
+
+    $scope.onDropReroll = function (e) {
+      var index = arguments[1]["helper"][0]["name"];
+      $scope.setReroll(index, 1);
+    };
+
+    $scope.onDropKeep = function (e) {
+      var index = arguments[1]["helper"][0]["name"];
+      $scope.setReroll(index, 0);
+    };
+
+    scaleBodyService.scaleBody({width: 350, height: 519});
+  
+    // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
+    updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
+
+    gameService.setGame({
+      gameDeveloperEmail: "img236@nyu.edu",
+      minNumberOfPlayers: 2,
+      maxNumberOfPlayers: 2,
+      exampleGame: gameLogic.getExampleGame(),
+      isMoveOk: gameLogic.isMoveOk,
+      updateUI: updateUI
+    });
   });
