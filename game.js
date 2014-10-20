@@ -3,7 +3,7 @@
 angular.module('myApp', ['ngDragDrop'])
   .controller('Ctrl', function (
       $window, $scope, $log, $timeout,
-      gameService, gameLogic) {
+      gameService, scaleBodyService, gameLogic) {
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
 
@@ -175,7 +175,6 @@ angular.module('myApp', ['ngDragDrop'])
     };
 
     $scope.onDropReroll = function (e) {
-      console.log("fuck you");
       var index = arguments[1]["helper"][0]["name"];
       $scope.setReroll(index, 1);
     };
@@ -184,6 +183,8 @@ angular.module('myApp', ['ngDragDrop'])
       var index = arguments[1]["helper"][0]["name"];
       $scope.setReroll(index, 0);
     };
+
+    scaleBodyService.scaleBody({width: 350, height: 519});
   
     // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
     updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
