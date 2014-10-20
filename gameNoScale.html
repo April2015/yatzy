@@ -12,13 +12,14 @@
   <script src="http://yoav-zibin.github.io/emulator/ngDraggable.js"></script>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js"></script>
+
 
   <script src="game.js"></script>
   <script src="gameLogic.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
   
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
@@ -66,15 +67,15 @@
       <div style="clear:both;"></div>
     </div>
     <div id="dice">
-      <div class="reroll" ng-drop="true" ng-drop-success=="onDropReroll(e)">
-        <div ng-repeat="(key, value) in dice track by $index" ng-class="{di: true}" >
-          <img data-drag="true" data-ng-src="images/{{value != null ? value : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
+      <div class="reroll" ng-drop="true" ng-drop-success="onDropReroll($event)">
+        <div ng-repeat="(key, diValue) in dice track by $index" ng-class="{di: true}" >        
+          <img ng-drag="true" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
         </div>
         <span>ROLL</span>
       </div>
-      <div class="keep" ng-drop="true" ng-drop-success="onDropKeep(e)">
-        <div ng-repeat="(key, value) in dice track by $index" ng-class="{di: true}" >
-          <img ng-drag="true" data-ng-src="images/{{value != null ? value : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
+      <div class="keep" ng-drop="true" ng-drop-success="onDropKeep($event)">
+        <div ng-repeat="(key, diValue) in dice track by $index" ng-class="{di: true}" >
+          <img ng-drag="true" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
         </div>
         <span>KEEP</span>
       </div>

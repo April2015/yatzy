@@ -1,9 +1,7 @@
 'use strict';
 
-angular.module('myApp', ['ngDragDrop'])
-  .controller('Ctrl', function (
-      $window, $scope, $log, $timeout,
-      gameService, scaleBodyService, gameLogic) {
+angular.module('myApp', ['ngDraggable'])
+  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, scaleBodyService, gameLogic) {
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
 
@@ -168,23 +166,15 @@ angular.module('myApp', ['ngDragDrop'])
       return $scope.delta !== undefined && $scope.delta.category === key && $scope.turnIndex != playerId;
     }
 
-    $scope.dragging = false;
-    $scope.onStartCallback = function () {
-      $scope.dragging = true;
-      var index = arguments[1]["helper"][0]["name"];
-    };
-
     $scope.onDropReroll = function (e) {
-      var index = arguments[1]["helper"][0]["name"];
+      var index = e.element[0].name;
       $scope.setReroll(index, 1);
     };
 
     $scope.onDropKeep = function (e) {
-      var index = arguments[1]["helper"][0]["name"];
+      var index = e.element[0].name;
       $scope.setReroll(index, 0);
     };
-
-    scaleBodyService.scaleBody({width: 350, height: 519});
   
     // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
     updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
@@ -197,4 +187,6 @@ angular.module('myApp', ['ngDragDrop'])
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
     });
+  }).service('scaleBodyService', function() {
+    this.scaleBody = function () {}; // Fake scaleBodyService because scaling and drag-n-drop don't work together
   });
