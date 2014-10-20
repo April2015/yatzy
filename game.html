@@ -1,89 +1,32 @@
+
 <!DOCTYPE html>
-<html manifest="game.appcache" lang="en" ng-app="myApp">
+<html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Yatzy</title>
-  <meta name="description" content="Yatzy game">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.min.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js"></script>
-
-  <script src="game.js"></script>
-  <script src="gameLogic.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
+  <title>Scaling a game</title>
+  <meta name="description" content="Scaling a game">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <script>
+  angular.module('myApp', [])
+    .controller('Ctrl', function (scaleBodyService) {
+      scaleBodyService.scaleBody({width: 350, height: 519});
+      var src = "gameNoScale.html";
+      if (window.parent === window) {
+        src += "?test";
+      }
+      window.document.getElementById("game_iframe").src = src;
+    });
+  </script>
   <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
-  
-  <link rel="stylesheet" type="text/css" href="game.css">
+  <script src="http://yoav-zibin.github.io/emulator/messagePasser.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
 </head>
-<body ng-controller="Ctrl">
-  <div id="game">
-    <div id="score-sheets">
-      <table id="p1">
-        <tr>
-          <td ng-class="{cell: true, center: true}">
-            <b>PLAYER ONE</b>
-          </td>
-          <td ng-class="{cell: true, center: true}">
-          </td>
-        </tr>
-        <tr ng-repeat="key in order track by $index">
-          <td ng-class="{cell: true, split: key == 'sixes'}">
-            <b>{{key}}</b>
-          </td>
-          <td ng-click="scoreInCategory(key, 0)" width="50px" height="20px" ng-class="{cell: true, center: true, split: key == 'sixes', clickable: true}">
-            <div ng-class="{cellDiv: true, dropIn: shouldDropIn(key, 0)}">
-              {{board[0][key]}}
-            </div>
-          </td>
-        </tr>
-      </table>
-      <table id="p2">
-        <tr>
-          <td ng-class="{cell: true}">
-            <b>PLAYER TWO</b>
-          </td>
-          <td ng-class="{cell: true, center: true}">
-          </td>
-        </tr>
-        <tr ng-repeat="key in order track by $index">
-          <td ng-class="{cell: true, split: key == 'sixes'}">
-            <b>{{key}}</b>
-          </td>
-          <td ng-click="scoreInCategory(key, 1)" width="50px" height="20px" ng-class="{cell: true, center: true, split: key == 'sixes', clickable: true}">
-            <div ng-class="{cellDiv: true, dropIn: shouldDropIn(key, 1)}">
-              {{board[1][key]}}
-            </div>
-          </td>
-        </tr>
-      </table>
-      <div style="clear:both;"></div>
-    </div>
-    <div id="dice">
-      <div class="reroll" data-drop="true" jqyoui-droppable="{onDrop: 'onDropReroll'}">
-        <div ng-repeat="(key, value) in dice track by $index" ng-class="{di: true}" >
-          <img data-drag="true" jqyoui-draggable="{onStart: 'onStartCallback'}" data-ng-src="images/{{value != null ? value : '1'}}.png" name="{{$index}}" ng-click="setReroll($index, -1)" ng-if="rerolls.indexOf(key) != -1"/>
-        </div>
-        <span>ROLL</span>
-      </div>
-      <div class="keep" data-drop="true" jqyoui-droppable="{onDrop: 'onDropKeep'}">
-        <div ng-repeat="(key, value) in dice track by $index" ng-class="{di: true}" >
-          <img data-drag="true" jqyoui-draggable="{onStart: 'onStartCallback'}" data-ng-src="images/{{value != null ? value : '1'}}.png" name="{{$index}}" ng-click="setReroll($index, -1)" ng-if="rerolls.indexOf(key) == -1"/>
-        </div>
-        <span>KEEP</span>
-      </div>
-      <div class="button" ng-click="rollDice()">
-      Roll 'Em
-    </div>
-    {{rollNumber}} {{isYourTurn}}
-    </div>
-    <div style="clear:both;"></div>
-    
-  </div>
+<body ng-cloak ng-controller="Ctrl" bgcolor="#FFFCD6">
+  <iframe id="game_iframe"
+      frameborder="0"
+      style="height:100%; width:100%; overflow: hidden;"
+      scrolling="no" seamless="seamless"></iframe>
 </body>
 </html>
