@@ -4,6 +4,8 @@ angular.module('myApp', ['ngDraggable'])
   .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, scaleBodyService, gameLogic) {
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
+    $scope.waitForComputer = false;
+    $scope.doneRolling = false;
 
     var rollSoundEff = new Audio('audio/roll.mp3');
     var moveSoundEff = new Audio('audio/move.mp3');
@@ -81,11 +83,13 @@ angular.module('myApp', ['ngDraggable'])
         }else{
           $timeout(sendComputerMove, 3000);
         }
+      }else{
+        $scope.waitForComputer = false;
       }
     }
     
     $scope.scoreInCategory = function (category, playerId) {
-      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling) {
+      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling || $scope.waitForComputer) {
         return;
       }
       if($scope.rollNumber == 1){
@@ -101,7 +105,8 @@ angular.module('myApp', ['ngDraggable'])
 
         moveSoundEff.play();
         $timeout(function(){
-          gameService.makeMove(move);  
+          gameService.makeMove(move);
+          $scope.waitForComputer = true;
         },500);
       } catch (e) {
         $log.info(["You've already scored here:", category, playerId]);
@@ -109,12 +114,12 @@ angular.module('myApp', ['ngDraggable'])
       }
     };
 
-    $scope.doneRolling = false;
+    
     $scope.rollDice = function () {
-      $log.info(["Roll dice:", $scope.rerolls]);
-      if (!$scope.isYourTurn) {
+      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0) {
         return;
       }
+      $log.info(["Roll dice:", $scope.rerolls]);
       try {
         $scope.doneRolling = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);

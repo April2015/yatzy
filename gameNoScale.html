@@ -69,13 +69,13 @@
     <div id="dice">
       <div class="reroll" ng-drop="true" ng-drop-success="onDropReroll($event)">
         <div ng-repeat="(key, diValue) in dice track by $index" ng-class="{di: true}" >        
-          <img ng-drag="true" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
+          <img ng-drag="{{!waitForComputer}}" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
         </div>
         <span>ROLL</span>
       </div>
       <div class="keep" ng-drop="true" ng-drop-success="onDropKeep($event)">
         <div ng-repeat="(key, diValue) in dice track by $index" ng-class="{di: true}" >
-          <img ng-drag="true" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
+          <img ng-drag="{{!waitForComputer}}" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
         </div>
         <span>KEEP</span>
       </div>
