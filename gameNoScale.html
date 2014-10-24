@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html manifest="game.appcache" lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,7 +67,6 @@
       <div style="clear:both;"></div>
     </div>
     <div id="dice">
-    {{yourPlayerIndex}}
       <div class="reroll" ng-drop="true" ng-drop-success="onDropReroll($event)">
         <div ng-repeat="(key, diValue) in dice track by $index" ng-class="{di: true}" >        
           <img ng-drag="{{!waitForComputer}}" ng-drag-data="2" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
