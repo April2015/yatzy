@@ -29,6 +29,7 @@ angular.module('myApp', ['ngDraggable'])
     }
 
     function updateUI(params) {
+      console.log(JSON.stringify(params));
       $scope.jsonState = angular.toJson(params.stateAfterMove, true);
       $scope.board = params.stateAfterMove.board;
       $scope.delta = params.stateAfterMove.delta;
