@@ -6,6 +6,7 @@ angular.module('myApp', ['ngDraggable'])
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
     $scope.waitForComputer = false;
     $scope.doneRolling = false;
+    $scope.firstRoll = true;
 
     var rollSoundEff = new Audio('audio/roll.mp3');
     var moveSoundEff = new Audio('audio/move.mp3');
@@ -114,14 +115,14 @@ angular.module('myApp', ['ngDraggable'])
       }
     };
 
-    
     $scope.rollDice = function () {
-      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndex != $scope.turnIndex) {
+      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndex != $scope.turnIndex || (!$scope.doneRolling && !$scope.firstRoll)) {
         return;
       }
       $log.info(["Roll dice:", $scope.rerolls]);
       try {
         $scope.doneRolling = false;
+        $scope.firstRoll = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);
         $scope.rollNumber++;
         rollSoundEff.play();

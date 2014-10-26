@@ -79,7 +79,7 @@
         </div>
         <span>KEEP</span>
       </div>
-      <div class="button" ng-click="rollDice()">
+      <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && $scope.yourPlayerIndex == $scope.turnIndex && !waitForComputer">
       Roll 'Em
     </div>
     </div>
