@@ -94,6 +94,7 @@ angular.module('myApp', ['ngDraggable'])
     }
     
     $scope.scoreInCategory = function (category, playerId) {
+      console.log(!$scope.isYourTurn +" ||"+ playerId != $scope.turnIndex +" ||"+ category == "bonus" +" ||"+ !$scope.doneRolling +" ||"+ $scope.waitForComputer);
       if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling || $scope.waitForComputer) {
         return;
       }
