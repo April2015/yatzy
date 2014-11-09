@@ -44,7 +44,7 @@ angular.module('myApp', ['ngDraggable'])
       }else{
         $scope.rollNumber++;
       }
-      console.log($scope.rollNumber);
+      console.log("rollnumber " + $scope.rollNumber);
 
       if(params.stateAfterMove.d0 !== undefined){
         $scope.dice.d0 = params.stateAfterMove.d0;
