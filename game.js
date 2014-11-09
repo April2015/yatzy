@@ -39,11 +39,12 @@ angular.module('myApp', ['ngDraggable'])
       }
 
       if($scope.rollNumber === undefined || $scope.rollNumber == 1){
-        console.log(params.stateAfterMove.diceRoll);
+        console.log("droll " + params.stateAfterMove.diceRoll);
         if(params.stateAfterMove.diceRoll){
           $scope.rollNumber = params.stateAfterMove.rollNumber;
           $scope.rollNumber++;
           $scope.doneRolling = true;
+          $scope.firstRoll = false;
         }else{
           $scope.rollNumber = 1;
         }
@@ -108,7 +109,9 @@ angular.module('myApp', ['ngDraggable'])
       }
       $log.info(["Score in category", category, playerId]);
       try {
+        console.log("step 1");
         var move = gameLogic.createMove($scope.board, category, $scope.turnIndex, $scope.dice);
+        console.log("step 2");
         $scope.isYourTurn = false; // to prevent making another move
         $scope.rollNumber = 1;
         $scope.rerolls = undefined;
