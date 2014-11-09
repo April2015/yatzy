@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp', ['ngDraggable'])
-  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, scaleBodyService, gameLogic) {
+  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, gameLogic) {
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
     $scope.waitForComputer = false;
@@ -193,6 +193,4 @@ angular.module('myApp', ['ngDraggable'])
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
     });
-  }).service('scaleBodyService', function() {
-    this.scaleBody = function () {}; // Fake scaleBodyService because scaling and drag-n-drop don't work together
   });

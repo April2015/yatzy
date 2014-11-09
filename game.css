@@ -1,6 +1,7 @@
 html{
   /*this is a weird hack because scaleBodyService is causing unpredictable behavior*/
-  height:0px;
+  width: 350px;
+  height:519px;
 }
 body{
   background-color: #FFFCD6;
