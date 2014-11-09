@@ -204,6 +204,7 @@ angular.module('myApp').service('gameLogic', function() {
   }
 
   function checkForBonus(board, turnIndex, score, addScore){
+
     var playersBoard = board[turnIndex];
     var total = playersBoard.ones + playersBoard.twos + playersBoard.threes + playersBoard.fours + playersBoard.fives + playersBoard.sixes;
     if((addScore && (total + score) >= 63) || (total >= 63)){
@@ -218,7 +219,7 @@ angular.module('myApp').service('gameLogic', function() {
     var i, category;
     for (i = 0; i < 2; i++) {
       for (category in board[i]) {
-        if (board[i][category] === null) {
+        if (board[i][category] === "-") {
           return -1;
         }
         totalScore[i] += board[i][category];
@@ -238,7 +239,7 @@ angular.module('myApp').service('gameLogic', function() {
     var i, category;
     for (i = 0; i < 2; i++) {
       for (category in board[i]) {
-        if (board[i][category] == null) {
+        if (board[i][category] == "-") {
           return false;
         } else {
           totalScore[i] += board[i][category];  
@@ -252,35 +253,35 @@ angular.module('myApp').service('gameLogic', function() {
   function getInitialBoard(){
     return [
         {
-          ones: null, 
-          twos: null, 
-          threes: null, 
-          fours: null, 
-          fives: null, 
-          sixes: null, 
-          threeKind: null,
-          fourKind: null, 
-          fullHouse: null, 
-          smallStraight: null, 
-          largeStraight: null, 
-          yatzy: null,
-          chance: null, 
+          ones: "-", 
+          twos: "-", 
+          threes: "-", 
+          fours: "-", 
+          fives: "-", 
+          sixes: "-", 
+          threeKind: "-",
+          fourKind: "-", 
+          fullHouse: "-", 
+          smallStraight: "-", 
+          largeStraight: "-", 
+          yatzy: "-",
+          chance: "-", 
           bonus: 0
         }, 
         {
-          ones: null, 
-          twos: null, 
-          threes: null,
-          fours: null,
-          fives: null, 
-          sixes: null, 
-          threeKind: null, 
-          fourKind: null, 
-          fullHouse: null, 
-          smallStraight: null, 
-          largeStraight: null, 
-          yatzy: null,
-          chance: null, 
+          ones: "-", 
+          twos: "-", 
+          threes: "-",
+          fours: "-",
+          fives: "-", 
+          sixes: "-", 
+          threeKind: "-", 
+          fourKind: "-", 
+          fullHouse: "-", 
+          smallStraight: "-", 
+          largeStraight: "-", 
+          yatzy: "-",
+          chance: "-", 
           bonus: 0
         }
       ];
@@ -352,19 +353,19 @@ angular.module('myApp').service('gameLogic', function() {
       board = getInitialBoard();
     }
 
-    if(board[turnIndex][scoreCategory] !== null){
+    if(board[turnIndex][scoreCategory] != "-"){
       throw new Error("Can only score once in that category!");
     }
 
     var score = determineValueOfScore(scoreCategory, dice);
     
-    if(checkForBonus(board, turnIndex, score, (scoreCategory == "ones" || scoreCategory == "ones" || scoreCategory == "threes" || scoreCategory == "fours" || scoreCategory == "fives" || scoreCategory == "sixes"))){
-      board[turnIndex].bonus = 35;
-    }
-    
     var boardAfterMove = copyObject(board);
 
     boardAfterMove[turnIndex][scoreCategory] = score;
+
+    if(checkForBonus(boardAfterMove, turnIndex, score, (scoreCategory == "ones" || scoreCategory == "ones" || scoreCategory == "threes" || scoreCategory == "fours" || scoreCategory == "fives" || scoreCategory == "sixes"))){
+      boardAfterMove[turnIndex].bonus = 35;
+    }
 
     var winner = getWinner(boardAfterMove);
     var secondOp;
@@ -557,6 +558,7 @@ angular.module('myApp').service('gameLogic', function() {
 
       // check if this is a dice rolling move
       if(move[0].set.value) {
+
         var rollNumber = move[1].set.value;
         
         //can't roll more than 5 dice, can have up to 2 re-rolls
@@ -588,7 +590,7 @@ angular.module('myApp').service('gameLogic', function() {
         var board = stateBeforeMove.board;
         var expectedMove = createMove(board, scoreCategory, turnIndexBeforeMove, dice);
         // must score in an unscored category
-        if(board !== undefined && board[turnIndexBeforeMove][scoreCategory] !== null){
+        if(board !== undefined && board[turnIndexBeforeMove][scoreCategory] != "-"){
           return false;
         }
 

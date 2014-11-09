@@ -8,6 +8,7 @@ module.exports = function(config){
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.js',
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-mocks.js',
       'http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js',
+      'http://yoav-zibin.github.io/emulator/ngDraggable.js',
       '*.js'
     ],
 

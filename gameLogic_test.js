@@ -83,8 +83,8 @@ describe("In Yatzy", function() {
     expectMoveOk({diceRoll: false, turnIndexBeforeMove: 0, stateBeforeMove: {d0: 1, d1: 1, d2: 1, d3: 3, d4: 3},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 1}},
-          {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}, 
-                                      {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}]}},
+          {set: {key: "board", value: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "fullHouse", score: 25}}}
         ]});
   });
@@ -93,8 +93,8 @@ describe("In Yatzy", function() {
     expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 0, stateBeforeMove: {},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 1}},
-          {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}, 
-                                      {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}]}},
+          {set: {key: "board", value: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "superScoreCategory", score: 250}}}
         ]});
   });
@@ -103,34 +103,34 @@ describe("In Yatzy", function() {
     expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 0, stateBeforeMove: {},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 1}},
-          {set: {key: "board", value: [{ones: 3, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}, 
-                                      {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: 0}]}},
+          {set: {key: "board", value: [{ones: 3, twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "ones", score: 10}}}
         ]});
   });
 
   it("the next player can make a move on the previous board state", function() {
-    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}], delta: {category: "fullHouse", score: 25}, d0: 1, d1: 1, d2: 1, d3: 3, d4: 3},
+    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}], delta: {category: "fullHouse", score: 25}, d0: 1, d1: 1, d2: 1, d3: 3, d4: 3},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 0}},
-          {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, 
-                                      {ones: 3, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}]}},
+          {set: {key: "board", value: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: 3, twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "ones", score: 3}}}
         ]});
   });
 
   it("63 points in the upper sections (ones, twos, threes...) gets you a 35 point bonus", function() {
-    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 1, twos: 2, threes: 3, fours: 4, fives: 5, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, {ones: null, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}], delta: {category: "fullHouse", score: 25}, d0: 1, d1: 1, d2: 1, d3: 3, d4: 3},
+    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 1, twos: 2, threes: 3, fours: 4, fives: 5, sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, {ones: "-", twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}], delta: {category: "fullHouse", score: 25}, d0: 1, d1: 1, d2: 1, d3: 3, d4: 3},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 0}},
-          {set: {key: "board", value: [{ones: 1, twos: 2, threes: 3, fours: 4, fives: 5, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, 
-                                      {ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}]}},
+          {set: {key: "board", value: [{ones: 1, twos: 2, threes: 3, fours: 4, fives: 5, sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "ones", score: 3}}}
         ]});
   });
 
   it("the final scoring move of the last player ends the game", function() {
-    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: null, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}},
+    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: "-", threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}},
         move:[{set: {key: "diceRoll", value: false}},
           {endMatch:{endMatchScores:[265,259]}},
           {set: {key: "board", value: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, 
@@ -140,17 +140,17 @@ describe("In Yatzy", function() {
   });
 
   it("you can't re-score in a category that has already been scored in", function() {
-    expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 0, stateBeforeMove: {board: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}], delta: {category: "fullHouse", score: 25}},
+    expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 0, stateBeforeMove: {board: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}], delta: {category: "fullHouse", score: 25}},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 1}},
-          {set: {key: "board", value: [{ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: 25, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}, 
-                                      {ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null, threeKind: null, fourKind: null, fullHouse: null, smallStraight: null, largeStraight: null, yatzy: null, chance: null, bonus: null}]}},
+          {set: {key: "board", value: [{ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: 25, smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}, 
+                                      {ones: "-", twos: "-", threes: "-", fours: "-", fives: "-", sixes: "-", threeKind: "-", fourKind: "-", fullHouse: "-", smallStraight: "-", largeStraight: "-", yatzy: "-", chance: "-", bonus: 0}]}},
           {set: {key: "delta", value: {category: "fullHouse", score: 25}}}
         ]});
   });
 
   it("the player with the highest score wins", function() {
-    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: null, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}, d0: 2, d1: 2, d2: 2, d3: 2, d4: 3},
+    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: "-", threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}, d0: 2, d1: 2, d2: 2, d3: 2, d4: 3},
         move:[{set: {key: "diceRoll", value: false}},
           {endMatch:{endMatchScores:[265,267]}},
           {set: {key: "board", value: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, 
@@ -160,7 +160,7 @@ describe("In Yatzy", function() {
   });
 
   it("ties happen if the scores are the same after 13 rounds of rolling", function() {
-    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: null, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}, d0: 2, d1: 2, d2: 2, d3: 3, d4: 3},
+    expectMoveOk({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: "-", threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}, d0: 2, d1: 2, d2: 2, d3: 3, d4: 3},
         move:[{set: {key: "diceRoll", value: false}},
           {endMatch:{endMatchScores:[265,265]}},
           {set: {key: "board", value: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, 
@@ -170,7 +170,7 @@ describe("In Yatzy", function() {
   });
 
   it("a scoring move must explicitly change the board state", function() {
-    expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: null, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}},
+    expectIllegalMove({diceRoll: false, turnIndexBeforeMove: 1, stateBeforeMove: {board: [{ones: 3, twos: 6, threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}, {ones: 3, twos: "-", threes: 9, fours: 12, fives: 15, sixes: 18, threeKind: 8, fourKind: 6, fullHouse: 25, smallStraight: 30, largeStraight: 40, yatzy: 50, chance: 8, bonus: 35}], delta: {category: "ones", score: 3}},
         move:[{set: {key: "diceRoll", value: false}},
           {setTurn: {turnIndex: 0}},
           {set: {key: "delta", value: {category: "twos", score: 6}}}
