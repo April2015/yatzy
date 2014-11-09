@@ -33,7 +33,7 @@ angular.module('myApp', ['ngDraggable'])
       $scope.jsonState = angular.toJson(params.stateAfterMove, true);
       $scope.board = params.stateAfterMove.board;
       $scope.delta = params.stateAfterMove.delta;
-      $scope.rollNumber = params.stateAfterMove.rollNumber + 1;
+      $scope.rollNumber = params.stateAfterMove.rollNumber;
       $scope.dice = {};
       if($scope.rerolls === undefined){
         $scope.rerolls = ["d0", "d1", "d2", "d3", "d4"];
@@ -41,7 +41,10 @@ angular.module('myApp', ['ngDraggable'])
 
       if($scope.rollNumber === undefined){
         $scope.rollNumber = 1;
+      }else{
+        $scope.rollNumber++;
       }
+      console.log($scope.rollNumber);
 
       if(params.stateAfterMove.d0 !== undefined){
         $scope.dice.d0 = params.stateAfterMove.d0;
