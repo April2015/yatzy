@@ -5,6 +5,7 @@ http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 http://yoav-zibin.github.io/emulator/ngDraggable.js
 http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js
 http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js
+http://yoav-zibin.github.io/emulator/scaleBodyService.js
 http://yoav-zibin.github.io/emulator/messagePasser.js
 
 http://yoav-zibin.github.io/emulator/gameService.js
