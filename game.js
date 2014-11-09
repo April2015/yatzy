@@ -110,6 +110,7 @@ angular.module('myApp', ['ngDraggable'])
           $scope.waitForComputer = true;
         },500);
       } catch (e) {
+        console.log(e);
         $log.info(["You've already scored here:", category, playerId]);
         return;
       }
