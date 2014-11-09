@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="game.appcache" lang="en" ng-app="myApp">
+<html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -78,7 +78,7 @@
         </div>
         <span>KEEP</span>
       </div>
-      <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && $scope.yourPlayerIndex == $scope.turnIndex && !waitForComputer">
+      <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && yourPlayerIndex == turnIndex && !waitForComputer">
       Roll 'Em
     </div>
     </div>
