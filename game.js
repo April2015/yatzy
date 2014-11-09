@@ -38,7 +38,7 @@ angular.module('myApp', ['ngDraggable'])
         $scope.rerolls = ["d0", "d1", "d2", "d3", "d4"];
       }
 
-      if($scope.rollNumber === undefined){
+      if($scope.rollNumber === undefined || $scope.rollNumber == 1){
         console.log(params.stateAfterMove.diceRoll);
         if(params.stateAfterMove.diceRoll){
           $scope.rollNumber = params.stateAfterMove.rollNumber;
