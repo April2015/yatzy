@@ -42,7 +42,8 @@ angular.module('myApp', ['ngDraggable'])
         console.log(params.stateAfterMove.diceRoll);
         if(params.stateAfterMove.diceRoll){
           $scope.rollNumber = params.stateAfterMove.rollNumber;
-          $scope.rollNumber++;  
+          $scope.rollNumber++;
+          $scope.doneRolling = true;
         }else{
           $scope.rollNumber = 1;
         }
