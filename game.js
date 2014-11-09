@@ -39,7 +39,6 @@ angular.module('myApp', ['ngDraggable'])
       }
 
       if($scope.rollNumber === undefined || $scope.rollNumber == 1){
-        console.log("droll " + params.stateAfterMove.diceRoll);
         if(params.stateAfterMove.diceRoll){
           $scope.rollNumber = params.stateAfterMove.rollNumber;
           $scope.rollNumber++;
@@ -49,8 +48,7 @@ angular.module('myApp', ['ngDraggable'])
           $scope.rollNumber = 1;
         }
       }
-      console.log("rollnumber " + $scope.rollNumber);
-
+      
       if(params.stateAfterMove.d0 !== undefined){
         $scope.dice.d0 = params.stateAfterMove.d0;
       }else {
@@ -99,8 +97,6 @@ angular.module('myApp', ['ngDraggable'])
     }
     
     $scope.scoreInCategory = function (category, playerId) {
-      console.log("not isYourTurn" + !$scope.isYourTurn +", pid = scope:"+ (playerId != $scope.turnIndex) +", cat = bonus:"+ (category == 'bonus' )+", not done rolling:"+ (!$scope.doneRolling) +", waitinforcpu"+ $scope.waitForComputer);
-      console.log("klasjdf;lksajdf;lkajsfd2");
       if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling || $scope.waitForComputer) {
         return;
       }
@@ -110,13 +106,7 @@ angular.module('myApp', ['ngDraggable'])
       }
       $log.info(["Score in category", category, playerId]);
       try {
-        console.log("step 1");
-        console.log($scope.board);
-        console.log(category);
-        console.log($scope.turnIndex);
-        console.log($scope.dice);
         var move = gameLogic.createMove($scope.board, category, $scope.turnIndex, $scope.dice);
-        console.log("step 2");
         $scope.isYourTurn = false; // to prevent making another move
         $scope.rollNumber = 1;
         $scope.rerolls = undefined;
@@ -127,7 +117,6 @@ angular.module('myApp', ['ngDraggable'])
           $scope.waitForComputer = true;
         },500);
       } catch (e) {
-        console.log(e);
         $log.info(["You've already scored here:", category, playerId]);
         return;
       }
