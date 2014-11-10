@@ -25,7 +25,8 @@ angular.module('myApp', ['ngDraggable'])
       $timeout(function(){
         gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
       },500);
-      $scope.rollNumber = 1;
+      console.log("set roll number cpu");
+      $scope.rollNumber rollNumber++;
       $scope.computerRolled = false;
     }
 
@@ -40,11 +41,14 @@ angular.module('myApp', ['ngDraggable'])
 
       if($scope.rollNumber === undefined || $scope.rollNumber == 1){
         if(params.stateAfterMove.diceRoll){
+          console.log("set roll number para");
           $scope.rollNumber = params.stateAfterMove.rollNumber;
+          console.log("set roll number ui");
           $scope.rollNumber++;
           $scope.doneRolling = true;
           $scope.firstRoll = false;
         }else{
+          console.log("set roll number setui");
           $scope.rollNumber = 1;
         }
       }
@@ -108,6 +112,7 @@ angular.module('myApp', ['ngDraggable'])
       try {
         var move = gameLogic.createMove($scope.board, category, $scope.turnIndex, $scope.dice);
         $scope.isYourTurn = false; // to prevent making another move
+        console.log("set roll number a");
         $scope.rollNumber = 1;
         $scope.rerolls = undefined;
 
@@ -131,6 +136,7 @@ angular.module('myApp', ['ngDraggable'])
         $scope.doneRolling = false;
         $scope.firstRoll = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);
+        console.log("set roll number r");
         $scope.rollNumber++;
         rollSoundEff.play();
         $timeout(function(){
