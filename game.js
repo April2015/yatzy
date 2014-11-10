@@ -81,7 +81,7 @@ angular.module('myApp', ['ngDraggable'])
       $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
       $scope.turnIndex = params.turnIndexAfterMove;
-      $scope.yourPlayerIndex = params.yourPlayerIndex;
+      $scope.yourPlayerIndexForMatch = params.yourPlayerIndex;
       // Is it the computer's turn?
       if ($scope.isYourTurn
           && params.playersInfo[params.yourPlayerIndex].playerId === '') {
@@ -123,7 +123,7 @@ angular.module('myApp', ['ngDraggable'])
     };
 
     $scope.rollDice = function () {
-      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndex != $scope.turnIndex || (!$scope.doneRolling && !$scope.firstRoll)) {
+      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndexForMatch != $scope.turnIndex || (!$scope.doneRolling && !$scope.firstRoll)) {
         return;
       }
       $log.info(["Roll dice:", $scope.rerolls]);
