@@ -25,8 +25,6 @@ angular.module('myApp', ['ngDraggable'])
       $timeout(function(){
         gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
       },500);
-      console.log("set roll number cpu");
-      $scope.rollNumber rollNumber++;
       $scope.computerRolled = false;
     }
 
@@ -39,18 +37,17 @@ angular.module('myApp', ['ngDraggable'])
         $scope.rerolls = ["d0", "d1", "d2", "d3", "d4"];
       }
 
-      if($scope.rollNumber === undefined || $scope.rollNumber == 1){
-        if(params.stateAfterMove.diceRoll){
-          console.log("set roll number para");
-          $scope.rollNumber = params.stateAfterMove.rollNumber;
-          console.log("set roll number ui");
-          $scope.rollNumber++;
-          $scope.doneRolling = true;
-          $scope.firstRoll = false;
-        }else{
-          console.log("set roll number setui");
-          $scope.rollNumber = 1;
-        }
+      // if that was a dice roll, increment the roll number
+      // if that was a scoring move, set the roll number to 1
+      // if rollnumber is undefined, set roll number to 1
+
+      if(params.stateAfterMove.diceRoll){
+        $scope.rollNumber = params.stateAfterMove.rollNumber;
+        $scope.rollNumber++;
+        $scope.doneRolling = true;
+        $scope.firstRoll = false;
+      }else{
+        $scope.rollNumber = 1;
       }
       
       if(params.stateAfterMove.d0 !== undefined){
@@ -112,8 +109,6 @@ angular.module('myApp', ['ngDraggable'])
       try {
         var move = gameLogic.createMove($scope.board, category, $scope.turnIndex, $scope.dice);
         $scope.isYourTurn = false; // to prevent making another move
-        console.log("set roll number a");
-        $scope.rollNumber = 1;
         $scope.rerolls = undefined;
 
         moveSoundEff.play();
@@ -136,8 +131,6 @@ angular.module('myApp', ['ngDraggable'])
         $scope.doneRolling = false;
         $scope.firstRoll = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);
-        console.log("set roll number r");
-        $scope.rollNumber++;
         rollSoundEff.play();
         $timeout(function(){
           gameService.makeMove(move);  
@@ -196,7 +189,7 @@ angular.module('myApp', ['ngDraggable'])
     };
   
     // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
-    updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
+    updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndexForMatch: -2});
 
     gameService.setGame({
       gameDeveloperEmail: "img236@nyu.edu",
