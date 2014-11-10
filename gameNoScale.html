@@ -78,6 +78,7 @@
         </div>
         <span>KEEP</span>
       </div>
+      {{yourPlayerIndexForMatch == turnIndex}} {{turnIndex}} {{yourPlayerIndexForMatch}} {{rollNumber}} {{!waitForComputer}}
       <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && yourPlayerIndexForMatch == turnIndex && !waitForComputer">
       Roll 'Em
     </div>
