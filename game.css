@@ -4,7 +4,7 @@ html{
   height:519px;
 }
 body{
-  background-color: #FFFCD6;
+  background-color: #424242;
   margin: 0px;
   padding: 0px;
   width: 350px;
@@ -26,12 +26,12 @@ tr, td {
 }
 
 #score-sheets {
-  background-color: #CCC66E;
+  background-color: #424242;
 }
 
 #p1{
   float: left;
-  border-right: #7F7E6B solid 1pt;
+  border-right: #B388FF solid 1px;
 }
 #p2{
   float: left;
@@ -45,7 +45,8 @@ tr, td {
   height: 6px;
   margin: 0px;
   padding: 5px 0 5px 5px;
-  border: 1px solid #7F7E6B;
+  border: 1px solid #B388FF;
+  color: white;
 }
 
 .clickable{
@@ -54,7 +55,7 @@ tr, td {
 }
 
 .split {
-  border-bottom: solid 2pt #7F7E6B;
+  border-bottom: solid 1px #B388FF;
 }
 
 table tr:first-child td{
@@ -83,12 +84,12 @@ img {
 }
 
 #dice{
-  border-top: solid #7F7E6B 1pt;
+  border-top: solid #2196F3 1pt;
   position: relative;
   text-align: left;
   border-collapse: collapse;
   height: 173px;
-  background-color: #7F7E6B;
+  background-color: #6200EA;
 }
 
 #dice div span {
@@ -96,7 +97,7 @@ img {
   right: 5px;
   top: 15px;
   margin: 0;
-  color: rgba(127, 126, 107, .45);
+  color: rgba(255, 255, 255, .45);
   font-size: 18pt;
 }
 
@@ -108,27 +109,33 @@ img {
 
 .reroll {
   height: 40px;
-  padding: 10px;
+  padding: 5px;
   position: relative;
-  background-color: #FFFCD6;
+  background-color: #AED581;
 }
 .keep {
   height: 40px;
-  padding: 10px;
+  padding: 5px;
   position: relative;
-  background-color: #FFF889;
+  background-color: #B388FF;
 }
 
 .button {
   display: block;
   margin: 10px auto;
-  background-color: #FFFCD6;
-  color: #7F7E6B;
+  background-color: #fff;
+  color: #6200EA;
   width: 150px;
   height: 25px;
   text-align: center;
   cursor: pointer;
-  padding-top: 5px;
+  padding-top:7px;
+}
+
+#banner {
+  background-color:#6200EA;
+  font-size: 18pt;
+  color:whitesr;
 }
 
 .cellDiv {
@@ -139,18 +146,18 @@ img {
 }
 
 .dropIn{
-  background-color: #7F7E6B;
+  background-color: #2196F3;
   -webkit-animation: slowlyAppear   1s linear; /* Chrome, Safari, Opera */
   animation: slowlyAppear 1s linear;
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes slowlyAppear {
   from {background-color: #CCC66E;}
-  to {background-color: #7F7E6B;}
+  to {background-color: #2196F3;}
 }
 
 /* Standard syntax */
 @keyframes slowlyAppear {
   from {background-color: #CCC66E;}
-  to {background-color: #7F7E6B;}
+  to {background-color: #2196F3;}
 }

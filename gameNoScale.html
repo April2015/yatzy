@@ -24,6 +24,9 @@
 </head>
 <body ng-controller="Ctrl">
   <div id="game">
+    <div id="banner">
+      Yatzy!
+    </div>
     <div id="score-sheets">
       <table id="p1">
         <tr>
@@ -79,8 +82,8 @@
         <span>KEEP</span>
       </div>
       <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && yourPlayerIndexForMatch == turnIndex && !waitForComputer">
-      Roll 'Em
-    </div>
+        Roll 'Em
+      </div>
     </div>
     <div style="clear:both;"></div>
     
