@@ -2,8 +2,8 @@ html{
   /*this is a weird hack because scaleBodyService is causing unpredictable behavior*/
   margin: 0px;
   padding: 0px;
-  width: 100%;
-  height:100%;
+  width: 350px;
+  height:546px;
 }
 body{
   background-color: #424242;
