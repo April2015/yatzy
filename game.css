@@ -1,14 +1,16 @@
 html{
   /*this is a weird hack because scaleBodyService is causing unpredictable behavior*/
-  width: 350px;
-  height:519px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height:100%;
 }
 body{
   background-color: #424242;
   margin: 0px;
   padding: 0px;
   width: 350px;
-  height:519px;
+  height:546px;
 }
 
 table {
@@ -89,7 +91,7 @@ img {
   text-align: left;
   border-collapse: collapse;
   height: 173px;
-  background-color: #6200EA;
+  background-color: #424242;
 }
 
 #dice div span {
@@ -122,7 +124,7 @@ img {
 
 .button {
   display: block;
-  margin: 10px auto;
+  margin: 20px auto;
   background-color: #fff;
   color: #6200EA;
   width: 150px;
