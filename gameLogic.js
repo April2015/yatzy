@@ -342,7 +342,11 @@ angular.module('myApp').service('gameLogic', function() {
       if(rerolls.indexOf(s) !== -1){
         move.push({setRandomInteger: {key: s, from: 1, to: 7}});
       } else {
-        move.push({set: {key: s, value: dice[s]}});
+        var val = dice[s];
+        if(dice[s] == null){
+          val = -1;
+        }
+        move.push({set: {key: s, value: val}});
       }
     }
     return move;
