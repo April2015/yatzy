@@ -12,12 +12,21 @@
   <script src="game.js"></script>
   <script src="gameLogic.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/dist/gameServices.min.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body ng-cloak ng-controller="Ctrl">
   <div id="gameArea">
+    <svg id="draggingLines" width="100%" height="100%"
+        style="display:none; position:absolute; z-index: 30;">
+      <line id="horizontalDraggingLine"
+            x1="0" y1="12.5%"
+            x2="100%" y2="12.5%"
+            stroke="red"
+            stroke-width="1%"/>
+    </svg>
     <div id="score-sheets" style="position: relative; width: 100%; height: 75%;">
       <div ng-repeat="playerIndex in [0,1]" style="position: absolute; left:{{playerIndex * 50}}%; width: 50%; height: 100%;">
         <div class="cell" style="position: absolute; width: 100%; height: 6.6%;">

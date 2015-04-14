@@ -1,9 +1,47 @@
 'use strict';
 
+window.touchElementId = "score-sheets";
+
 angular.module('myApp', [])
   .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
 
-    resizeGameAreaService.setWidthToHeight(350/546);
+    // Click-to-drag on score-sheets
+    var draggingLines = document.getElementById("draggingLines");
+    var horizontalDraggingLine = document.getElementById("horizontalDraggingLine");
+    var gameArea = document.getElementById("gameArea");
+    var scoreSheets = document.getElementById("score-sheets");
+    var rowsNum = 15;
+    window.handleDragEvent = handleDragEvent;
+    function handleDragEvent(type, clientX, clientY) {
+      // Center point in gameArea
+      var y = clientY - gameArea.offsetTop;
+      // Is outside scoreSheets?
+      draggingLines.style.display = "none";
+      var totalHeight = scoreSheets.clientHeight;
+      if (y < 0 || y >= totalHeight) {
+        return;
+      }
+      // Inside scoreSheets. Let's find the containing row
+      var row = Math.floor(rowsNum * y / totalHeight);
+      // row 0 is the player number (player one/two),
+      // and row 14 is bonus.
+      if (row == 0 || row == 14) {
+        return;
+      }
+      draggingLines.style.display = "inline";
+      var height = totalHeight / rowsNum;
+      var centerY = row * height + height / 2;
+      horizontalDraggingLine.setAttribute("y1", centerY);
+      horizontalDraggingLine.setAttribute("y2", centerY);
+
+      if (type === "touchend" || type === "touchcancel" || type === "touchleave" || type === "mouseup") {
+        // drag ended
+        draggingLines.style.display = "none";
+        $scope.scoreInCategory(row - 1);
+      }
+    }
+
+    resizeGameAreaService.setWidthToHeight(320/480);
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
     $scope.waitForComputer = false;
@@ -90,10 +128,15 @@ angular.module('myApp', [])
       }
     }
 
-    $scope.scoreInCategory = function (category, playerId) {
-      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || $scope.waitForComputer) {
+    $scope.scoreInCategory = function (index) {
+      var category = $scope.order[index];
+      if (!category || category == "bonus") {
+        throw new Error("Yoav Yatzy bug");
+      }
+      if (!$scope.isYourTurn || $scope.waitForComputer) {
         return;
       }
+      var playerId = $scope.turnIndex;
       if($scope.rollNumber == 1){
         $log.info(["You must roll the dice first!"]);
         return;
