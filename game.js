@@ -13,6 +13,9 @@ angular.module('myApp', [])
     var rowsNum = 15;
     window.handleDragEvent = handleDragEvent;
     function handleDragEvent(type, clientX, clientY) {
+      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rollNumber == 1) {
+        return;
+      }
       // Center point in gameArea
       var y = clientY - gameArea.offsetTop;
       // Is outside scoreSheets?
