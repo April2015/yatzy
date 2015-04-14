@@ -43,8 +43,8 @@ img {
 
 #dice div span {
   position: absolute;
-  right: 5px;
-  top: 15px;
+  right: 2%;
+  top: 10%;
   color: rgba(255, 255, 255, .45);
   font-size: 18pt;
 }
