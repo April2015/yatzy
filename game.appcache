@@ -1,21 +1,17 @@
+---
+layout: default
+title: Jekyll processing HTML5 cache to add build_revision
+---
 CACHE MANIFEST
+#
+# This will make sure the MANIFEST is changed on every commit!
+# {{ site.github.build_revision }}
 
-http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js
-http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
-http://yoav-zibin.github.io/emulator/ngDraggable.js
-http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js
-http://yoav-zibin.github.io/emulator/angular-dragdrop.1.0.8.min.js
-http://yoav-zibin.github.io/emulator/scaleBodyService.js
-http://yoav-zibin.github.io/emulator/messagePasser.js
-
-http://yoav-zibin.github.io/emulator/gameService.js
-http://yoav-zibin.github.io/emulator/messageService.js
-http://yoav-zibin.github.io/emulator/stateService.js
+http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js
+http://yoav-zibin.github.io/emulator/dist/gameServices.min.js
+http://yoav-zibin.github.io/emulator/main.css
 game.js
 gameLogic.js
-game.css
-audio/move.mp3
-audio/roll.mp3
 images/1.png
 images/2.png
 images/3.png
@@ -23,3 +19,5 @@ images/4.png
 images/5.png
 images/6.png
 game.css
+
+NETWORK:

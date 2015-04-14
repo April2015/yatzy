@@ -1,32 +1,62 @@
-
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="myApp" manifest="game.appcache">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Yatzy!</title>
-  <meta name="description" content="Scaling a game">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-  <script>
-  angular.module('myApp', [])
-    .controller('Ctrl', function (scaleBodyService) {
-      scaleBodyService.scaleBody({width: 350, height: 590});
-      var src = "gameNoScale.html";
-      if (window.parent === window) {
-        src += "?test";
-      }
-      window.document.getElementById("game_iframe").src = src;
-    });
-  </script>
-  <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/messagePasser.js"></script>
+  <title>Yatzy</title>
+  <meta name="description" content="Yatzy game">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+
+  <script src="game.js"></script>
+  <script src="gameLogic.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/dist/gameServices.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
-<body ng-cloak ng-controller="Ctrl" bgcolor="#FFFCD6">
-  <iframe id="game_iframe"
-      frameborder="0"
-      style="height:100%; width:100%; overflow: hidden;"
-      scrolling="no" seamless="seamless"></iframe>
+<body ng-cloak ng-controller="Ctrl">
+  <!--
+    Total width: 350
+    Total height: 546
+    title: 28/546 = 5%
+    score: 344/546 = 63%
+    dice: 174/546 = 32%
+  -->
+  <div id="gameArea">
+    <div id="banner" style="width: 100%; height: 5%;">
+      Yatzy!
+    </div>
+    <div id="score-sheets" style="position: relative; width: 100%; height: 63%;">
+      <div ng-repeat="playerIndex in [0,1]" style="position: absolute; left:{{playerIndex * 50}}%; width: 50%; height: 100%;">
+        <div class="cell" style="position: absolute; width: 100%; height: 6.6%;">
+          <b class="textMargin">PLAYER {{playerIndex ? "TWO" : "ONE"}}</b>
+        </div>
+        <div ng-repeat="key in order track by $index" style="position: absolute; width: 100%; height: 6.6%; top:{{($index+1)*6.6}}%; left:0%;">
+          <div class="cell" style="position: absolute; width: 50%; height: 100%;">
+            <b class="textMargin">{{key}}</b>
+          </div>
+          <div class="cell" ng-class="{dropIn: shouldDropIn(key, playerIndex)}"
+              ng-click="scoreInCategory(key, playerIndex)" style="position: absolute; left:50%; width: 50%; height: 100%;">
+            <b class="textMargin">{{board[playerIndex][key]}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="dice" style="position: relative; width: 100%; height: 32%;">
+      <div class="reroll" >
+        <img ng-repeat="(key, diValue) in dice track by $index" ng-click="onClickReroll($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
+        <span>ROLL</span>
+      </div>
+      <div class="keep">
+        <img ng-repeat="(key, diValue) in dice track by $index" ng-click="onClickKeep($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
+        <span>KEEP</span>
+      </div>
+      <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && yourPlayerIndexForMatch == turnIndex && !waitForComputer">
+        <b class="textMargin2">Roll 'Em</b>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

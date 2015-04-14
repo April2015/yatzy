@@ -1,27 +1,21 @@
 'use strict';
 
-angular.module('myApp', ['ngDraggable'])
-  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, gameLogic) {
+angular.module('myApp', [])
+  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
+
+    resizeGameAreaService.setWidthToHeight(350/546);
 
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
     $scope.waitForComputer = false;
-    $scope.doneRolling = false;
     $scope.firstRoll = true;
 
-    var rollSoundEff = new Audio('audio/roll.mp3');
-    var moveSoundEff = new Audio('audio/move.mp3');
-    rollSoundEff.load();
-    moveSoundEff.load();
-
     function sendComputerRollMove() {
-      rollSoundEff.play();
       $timeout(function(){
         gameService.makeMove(gameLogic.createComputerRollMove($scope.board, $scope.dice, $scope.turnIndex, $scope.rollNumber));
       },2100);
       $scope.computerRolled = true;
     }
     function sendComputerMove() {
-      moveSoundEff.play();
       $timeout(function(){
         gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
       },500);
@@ -44,12 +38,11 @@ angular.module('myApp', ['ngDraggable'])
       if(params.stateAfterMove.diceRoll){
         $scope.rollNumber = params.stateAfterMove.rollNumber;
         $scope.rollNumber++;
-        $scope.doneRolling = true;
         $scope.firstRoll = false;
       }else{
         $scope.rollNumber = 1;
       }
-      
+
       if(params.stateAfterMove.d0 !== undefined){
         $scope.dice.d0 = params.stateAfterMove.d0;
       }else {
@@ -96,9 +89,9 @@ angular.module('myApp', ['ngDraggable'])
         $scope.waitForComputer = false;
       }
     }
-    
+
     $scope.scoreInCategory = function (category, playerId) {
-      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || !$scope.doneRolling || $scope.waitForComputer) {
+      if (!$scope.isYourTurn || playerId != $scope.turnIndex || category == "bonus" || $scope.waitForComputer) {
         return;
       }
       if($scope.rollNumber == 1){
@@ -111,7 +104,6 @@ angular.module('myApp', ['ngDraggable'])
         $scope.isYourTurn = false; // to prevent making another move
         $scope.rerolls = undefined;
 
-        moveSoundEff.play();
         $timeout(function(){
           gameService.makeMove(move);
           $scope.waitForComputer = true;
@@ -123,44 +115,34 @@ angular.module('myApp', ['ngDraggable'])
     };
 
     $scope.rollDice = function () {
-      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndexForMatch != $scope.turnIndex || (!$scope.doneRolling && !$scope.firstRoll)) {
+      if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rerolls == 0 || $scope.yourPlayerIndexForMatch != $scope.turnIndex) {
         return;
       }
       $log.info(["Roll dice:", $scope.rerolls]);
       try {
-        $scope.doneRolling = false;
         $scope.firstRoll = false;
         var move = gameLogic.createRollMove($scope.dice, $scope.rerolls, $scope.rollNumber, $scope.turnIndex);
-        rollSoundEff.play();
-        $timeout(function(){
-          gameService.makeMove(move);  
-          $scope.doneRolling = true;
-        }, 2100);
+        gameService.makeMove(move);
       } catch (e) {
         $log.info(["No more rolls:", $scope.rollNumber]);
         return;
       }
     };
-    
+
     $scope.setReroll = function (dIndex, setTo) {
 
       if($scope.rollNumber == 1){
         // you have to roll all of the dice
         return;
-      }    
+      }
       if(setTo == -1){
-        if($scope.dragging){
-          $scope.dragging = false;
-          return;  
+        if($scope.rerolls.indexOf("d" + dIndex) != -1){
+          $scope.rerolls.splice($scope.rerolls.indexOf("d" + dIndex),1);
         }else{
-          if($scope.rerolls.indexOf("d" + dIndex) != -1){
-            $scope.rerolls.splice($scope.rerolls.indexOf("d" + dIndex),1);
-          }else{            
-            $scope.rerolls.push("d" + dIndex);
-          }
+          $scope.rerolls.push("d" + dIndex);
         }
         return;
-      }  
+      }
       if(setTo == 0){
         if($scope.rerolls.indexOf("d" + dIndex) == -1){
           return;
@@ -178,16 +160,16 @@ angular.module('myApp', ['ngDraggable'])
       return $scope.delta !== undefined && $scope.delta.category === key && $scope.turnIndex != playerId;
     }
 
-    $scope.onDropReroll = function (e) {
-      var index = e.element[0].name;
+    $scope.onClickReroll = function (index) {
+      $log.info("onClickReroll:", index);
+      $scope.setReroll(index, 0);
+    };
+
+    $scope.onClickKeep = function (index) {
+      $log.info("onClickKeep:", index);
       $scope.setReroll(index, 1);
     };
 
-    $scope.onDropKeep = function (e) {
-      var index = e.element[0].name;
-      $scope.setReroll(index, 0);
-    };
-  
     // Before getting any updateUI message, we show an empty board to a viewer (so you can't perform moves).
     updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndexForMatch: -2});
 
