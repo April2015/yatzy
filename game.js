@@ -12,7 +12,7 @@ angular.module('myApp', [])
     function sendComputerRollMove() {
       $timeout(function(){
         gameService.makeMove(gameLogic.createComputerRollMove($scope.board, $scope.dice, $scope.turnIndex, $scope.rollNumber));
-      },2100);
+      },500);
       $scope.computerRolled = true;
     }
     function sendComputerMove() {
@@ -81,9 +81,9 @@ angular.module('myApp', [])
           && params.playersInfo[params.yourPlayerIndex].playerId === '') {
         // Wait 500 milliseconds until animation ends.
         if(!$scope.computerRolled){
-          $timeout(sendComputerRollMove, 3000);
+          $timeout(sendComputerRollMove, 500);
         }else{
-          $timeout(sendComputerMove, 3000);
+          $timeout(sendComputerMove, 500);
         }
       }else{
         $scope.waitForComputer = false;
@@ -104,10 +104,8 @@ angular.module('myApp', [])
         $scope.isYourTurn = false; // to prevent making another move
         $scope.rerolls = undefined;
 
-        $timeout(function(){
-          gameService.makeMove(move);
-          $scope.waitForComputer = true;
-        },500);
+        gameService.makeMove(move);
+        $scope.waitForComputer = true;
       } catch (e) {
         $log.info(["You've already scored here:", category, playerId]);
         return;
