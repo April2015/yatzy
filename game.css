@@ -28,7 +28,7 @@ body{
   left: 25%;
 }
 img {
-  margin: 2.5% 1% 1% 1%;
+  margin: 2% 4% 1% 1%;
   height: 70%;
   position: relative;
 }
@@ -70,13 +70,6 @@ img {
   width: 50%;
   height: 20%;
   text-align: center;
-}
-
-#banner {
-  background-color:#6200EA;
-  font-size: 18pt;
-  text-align: center;
-  color:whitesr;
 }
 
 .dropIn{
