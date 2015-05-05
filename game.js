@@ -2,8 +2,8 @@
 
 window.touchElementId = "score-sheets";
 
-angular.module('myApp', [])
-  .controller('Ctrl', function ($window, $scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
+  .controller('Ctrl', function ($translate, $window, $scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
 
     // Click-to-drag on score-sheets
     var draggingLines = document.getElementById("draggingLines");
@@ -11,7 +11,7 @@ angular.module('myApp', [])
     var gameArea = document.getElementById("gameArea");
     var scoreSheets = document.getElementById("score-sheets");
     var rowsNum = 15;
-    dragAndDropService.addDragListener("gameArea", handleDragEvent);
+    window.handleDragEvent = handleDragEvent;
     function handleDragEvent(type, clientX, clientY) {
       if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rollNumber == 1) {
         return;

@@ -8,6 +8,11 @@ CACHE MANIFEST
 # {{ site.github.build_revision }}
 
 http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js
+http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js
+http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js
+http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css
+http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.woff
+http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.ttf
 http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js
 http://yoav-zibin.github.io/emulator/main.css
 game.js
@@ -18,6 +23,12 @@ images/3.png
 images/4.png
 images/5.png
 images/6.png
+images/1.jpg
+images/2.jpg
+images/3.jpg
+images/4.jpg
 game.css
+languages/en.js
 
 NETWORK:
+languages/zh.js
