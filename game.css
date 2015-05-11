@@ -1,5 +1,5 @@
 body{
-  background-color: #424242;
+  background-color: #fff;
 }
 #gameArea {
   font-family: sans-serif;
@@ -96,6 +96,7 @@ img {
 .carousel-indicators .active {
   background-color: green;
 }
+
 td {
   padding:0 5px 0 5px;
 }
