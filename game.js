@@ -11,8 +11,8 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
     var gameArea = document.getElementById("gameArea");
     var scoreSheets = document.getElementById("score-sheets");
     var rowsNum = 15;
-    window.handleDragEvent = handleDragEvent;
-    dragAndDropService.addDragListener("gameArea", handleDragEvent);
+    //window.handleDragEvent = handleDragEvent;
+    dragAndDropService.addDragListener("score-sheets", handleDragEvent);
     function handleDragEvent(type, clientX, clientY) {
       if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rollNumber == 1) {
         return;
