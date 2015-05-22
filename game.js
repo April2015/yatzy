@@ -3,7 +3,7 @@
 window.touchElementId = "score-sheets";
 
 angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
-  .controller('Ctrl', function ($translate, $window, $scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+  .controller('Ctrl', function ($translate, $window, $scope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
 
     // Click-to-drag on score-sheets
     var draggingLines = document.getElementById("draggingLines");
@@ -50,19 +50,6 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
     $scope.order = ["ones", "twos", "threes", "fours", "fives", "sixes", "threeKind", "fourKind", "smallStraight", "largeStraight", "fullHouse", "chance", "yatzy", "bonus"];
     $scope.waitForComputer = false;
     $scope.firstRoll = true;
-
-    function sendComputerRollMove() {
-      $timeout(function(){
-        gameService.makeMove(gameLogic.createComputerRollMove($scope.board, $scope.dice, $scope.turnIndex, $scope.rollNumber));
-      },500);
-      $scope.computerRolled = true;
-    }
-    function sendComputerMove() {
-      $timeout(function(){
-        gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
-      },500);
-      $scope.computerRolled = false;
-    }
 
     function updateUI(params) {
       $scope.jsonState = angular.toJson(params.stateAfterMove, true);
@@ -122,10 +109,10 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
       if ($scope.isYourTurn
           && params.playersInfo[params.yourPlayerIndex].playerId === '') {
         // Wait 500 milliseconds until animation ends.
-        if(!$scope.computerRolled){
-          $timeout(sendComputerRollMove, 500);
+        if ($scope.rollNumber === 1) {
+          gameService.makeMove(gameLogic.createComputerRollMove($scope.board, $scope.dice, $scope.turnIndex, $scope.rollNumber));
         }else{
-          $timeout(sendComputerMove, 500);
+          gameService.makeMove(gameLogic.createComputerMove($scope.board, $scope.turnIndex, $scope.dice));
         }
       }else{
         $scope.waitForComputer = false;
