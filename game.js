@@ -1,9 +1,8 @@
 'use strict';
 
-window.touchElementId = "score-sheets";
-
 angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
-  .controller('Ctrl', function ($translate, $window, $scope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+  .run(function ($translate, $window, $rootScope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+    var $scope = $rootScope;
 
     // Click-to-drag on score-sheets
     var draggingLines = document.getElementById("draggingLines");
@@ -11,9 +10,8 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
     var gameArea = document.getElementById("gameArea");
     var scoreSheets = document.getElementById("score-sheets");
     var rowsNum = 15;
-    //window.handleDragEvent = handleDragEvent;
     dragAndDropService.addDragListener("score-sheets", handleDragEvent);
-    function handleDragEvent(type, clientX, clientY) {
+    function handleDragEvent(type, clientX, clientY, event) {
       if (!$scope.isYourTurn || $scope.waitForComputer || $scope.rollNumber == 1) {
         return;
       }
@@ -29,17 +27,19 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
       var row = Math.floor(rowsNum * y / totalHeight);
       // row 0 is the player number (player one/two),
       // and row 14 is bonus.
-      if (row == 0 || row == 14) {
+      if (row <= 0 || row >= 14) {
         return;
       }
-      draggingLines.style.display = "inline";
-      var height = totalHeight / rowsNum;
-      var centerY = row * height + height / 2;
-      horizontalDraggingLine.setAttribute("y1", centerY);
-      horizontalDraggingLine.setAttribute("y2", centerY);
+      if (event.type.indexOf("mouse") !== 0) { // WEIRD bug in dekstop (using mouse), so avoding showing draggingLines on desktop.
+        draggingLines.style.display = "inline";
+        var height = totalHeight / rowsNum;
+        var centerY = row * height + height / 2;
+        horizontalDraggingLine.setAttribute("y1", centerY);
+        horizontalDraggingLine.setAttribute("y2", centerY);
+      }
 
       if (type === "touchend" || type === "touchcancel" || type === "touchleave" || type === "mouseup") {
-        // drag ended
+        $log.debug("handleDragEvent: drag ended");
         draggingLines.style.display = "none";
         $scope.scoreInCategory(row - 1);
       }
@@ -122,7 +122,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
     $scope.scoreInCategory = function (index) {
       var category = $scope.order[index];
       if (!category || category == "bonus") {
-        throw new Error("Yoav Yatzy bug");
+        return;
       }
       if (!$scope.isYourTurn || $scope.waitForComputer) {
         return;
