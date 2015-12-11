@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 // angular.module('myApp.messageService', [])
 //   .service('messageService', function($window, $log, $rootScope) {

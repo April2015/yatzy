@@ -29,10 +29,10 @@
   <!-- /build -->
 
   <!-- build:js dist/everything.min.js -->
-  <script   src="src/gameLogic.js"></script>
-  <!-- <script  src="ts_output_readonly_do_NOT_change_manually/src/gameLogic.js"></script> -->
-  <script   src="src/game.js"></script>
-  <!-- <script  src="ts_output_readonly_do_NOT_change_manually/src/game.js"></script> -->
+  <!-- <script   src="src/gameLogic.js"></script> -->
+  <script  src="ts_output_readonly_do_NOT_change_manually/src/gameLogic.js"></script>
+  <!-- <script   src="src/game.js"></script> -->
+  <script  src="ts_output_readonly_do_NOT_change_manually/src/game.js"></script>
 
 
   <!-- /build -->
@@ -274,11 +274,11 @@
     <div class="cell" style="position: absolute; width: 100%; height: 6.6%;">
       <b class="textMargin">{{ 'PLAYER' | translate }} {{playerIndex ? "2" : "1"}}</b>
     </div>
-    <div ng-repeat="key in order track by $index" style="position: absolute; width: 100%; height: 6.6%; top:{{($index+1)*6.6}}%; left:0%;">
+    <div ng-repeat="key in game.order track by $index" style="position: absolute; width: 100%; height: 6.6%; top:{{($index+1)*6.6}}%; left:0%;">
       <div class="cell" style="position: absolute; width: 50%; height: 100%;">
         <b class="textMargin">{{key}}</b>
       </div>
-      <div class="cell" ng-click="scoreInCategory($index, 0)" ng-class="{dropIn: shouldDropIn(key, playerIndex)}"
+      <div class="cell" ng-click="game.scoreInCategory($index, 0)" ng-class="{dropIn: game.shouldDropIn(key, playerIndex)}"
       style="position: absolute; left:50%; width: 50%; height: 100%;">
       <b class="textMargin">{{board[playerIndex][key]}}</b>
     </div>
@@ -287,14 +287,14 @@
 </div>
 <div id="dice" style="position: relative; width: 100%; height: 25%;">
   <div class="reroll" >
-    <img ng-repeat="(key, diValue) in dice track by $index" ng-click="onClickReroll($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) != -1"/>
+    <img ng-repeat="(key, diValue) in game.dice track by $index" ng-click="game.onClickReroll($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="game.rerolls.indexOf(key) != -1"/>
     <span>{{ 'ROLL' | translate }} </span>
   </div>
   <div class="keep">
-    <img ng-repeat="(key, diValue) in dice track by $index" ng-click="onClickKeep($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="rerolls.indexOf(key) == -1"/>
+    <img ng-repeat="(key, diValue) in game.dice track by $index" ng-click="game.onClickKeep($index)" ng-src="images/{{diValue != null ? diValue : '1'}}.png" name="{{$index}}" ng-if="game.rerolls.indexOf(key) == -1"/>
     <span>{{ 'KEEP' | translate }}</span>
   </div>
-  <div class="button" ng-click="rollDice()" ng-if="rollNumber < 4 && yourPlayerIndexForMatch == turnIndex && !waitForComputer">
+  <div class="button" ng-click="game.rollDice()" ng-if="game.rollNumber < 4 && game.yourPlayerIndex == game.turnIndex && !game.waitForComputer">
     <b class="textMargin2">{{ 'ROLL_EM' | translate }}</b>
   </div>
 </div>

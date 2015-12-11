@@ -14,7 +14,7 @@ interface Delta {
   score: number;
 }
 
-interface IState{
+interface IState {
   diceRoll?: boolean;
   rollNumber?: number;
   board?: Board;
@@ -36,7 +36,7 @@ interface DiceRollOrScoringMove {
   comment?: string;
 }
 
-interface ExampleMove{
+interface ExampleMove {
   diceRoll?: boolean;
   stateBeforeMove?: IState;
   stateAfterMove?: IState;
@@ -385,7 +385,7 @@ function determineValueOfScore(category: string, dice: Dice): number{
     return move;
   }
 
-  export function createComputerMove(board: Board, turnIndexBeforeMove: number, dice: Dice): IMove{
+  export function createComputerMove(board: Board, turnIndexBeforeMove: number, dice: Dice): IMove {
     // score in the best category you can!
     var scoreCategory: string = "";
     var bestScore: number = -1;
@@ -670,10 +670,8 @@ function determineValueOfScore(category: string, dice: Dice): number{
     return true;
   }
 
+
 }
-
-
-
 
 
 

@@ -2,8 +2,7 @@
 //
 // angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
 //   .run(function ($translate, $window, $rootScope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
-angular.module('myApp')
-  .run(['gameLogic',
+angular.module('myApp').run(['gameLogic',
         function (gameLogic) {
 
             'use strict';
@@ -263,10 +262,10 @@ angular.module('myApp')
     updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndexForMatch: -2});
 
     gameService.setGame({
-      gameDeveloperEmail: "img236@nyu.edu",
+      // gameDeveloperEmail: "img236@nyu.edu",
       minNumberOfPlayers: 2,
       maxNumberOfPlayers: 2,
-      exampleGame: gameLogic.getExampleGame(),
+      exampleGame: gameLogic.getExampleGame,
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
     });
