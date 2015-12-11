@@ -1,7 +1,64 @@
-'use strict';
+// 'use strict';
+//
+// angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
+//   .run(function ($translate, $window, $rootScope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+angular.module('myApp')
+  .run(['gameLogic',
+        function (gameLogic) {
 
-angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
-  .run(function ($translate, $window, $rootScope, $log, gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+            'use strict';
+    translate.setLanguage('en',{
+    "RULES_OF_YATZY":"Rules of Yatzy",
+    "RULES_SLIDE1":"Firstly, you can click on Roll 'Em button to roll dices.",
+    "RULES_SLIDE2":"Then, after each roll, the player chooses which dice to keep, and which to reroll. A player may reroll some or all of the dice up to two times on a turn.",
+    "RULES_SLIDE3":"The player must put a score or zero into a score box each turn.",
+    "RULES_SLIDE4":"The game ends when all score boxes are used. The player with the highest total score wins the game.",
+    "RULES_SLIDE5":"For more info about the game, please go to http://en.wikipedia.org/wiki/Yatzy.",
+    "RULES_SLIDE6":"For more info about the game, please go to http://en.wikipedia.org/wiki/Yatzy.",
+    "ROLL":"Roll",
+    "KEEP":"Keep",
+    "ROLL_EM":"Roll 'Em",
+    "CLOSE":"Close",
+    "PLAYER":"player",
+
+    "SCORE_TABLE":"score table",
+
+    "ONES":"Total of Aces only",
+    "TWOS":"Total of Twos only",
+    "THREES":"Total of Threes only",
+    "FOURS":"Total of Fours only",
+    "FIVES":"Total of Fives only",
+    "SIXES":"Total of Sixes only",
+    "THREEKIND":"Total of all 5 dices",
+    "FOURKIND":"Total of all 5 dices",
+    "SMALLSTRAIGHT":"30pts",
+    "LARGESTRAIGHT":"40pts",
+    "FULLHOUSE":"25pts",
+    "CHANCE":"Total of all 5 dices",
+    "YATZY":"50pts",
+    "BONUS":"100pts",
+
+    "KIND_EXPLANATION":"kind explanation",
+
+    "ones":"total of aces only",
+    "twos":"total of twos only",
+    "threes":"total of threes only",
+    "fours":"total of fours only",
+    "fives":"total of fives only",
+    "sixes":"total of sixes only",
+    "threekind":"score in the box only if the dice include 3 or more of the same number",
+    "fourkind":"score in the box only if the dice include 4 or more of the same number",
+    "smallstraight":"score in the box only if the dice show any sequence of four numbers",
+    "largestraight":"score in the box only if the dice show any sequence of five numbers",
+    "fullhouse":"score in the box only if the dice show 3 of one number and 2 of another",
+    "chance":"Score the total of any 5 dices in the box",
+    "yatzy":"Score in the box only if the dice show 5 of the same number",
+    "bonus":"If you roll a yatzy and already filled with 50, you get a 100 pts bonus!",
+    });
+
+
+    var $log = log;
+    var $translate = translate;
     var $scope = $rootScope;
 
     // Click-to-drag on score-sheets
@@ -213,4 +270,4 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
     });
-  });
+  }]);

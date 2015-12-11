@@ -1,7 +1,11 @@
 'use strict';
 
-angular.module('myApp.messageService', [])
-  .service('messageService', function($window, $log, $rootScope) {
+// angular.module('myApp.messageService', [])
+//   .service('messageService', function($window, $log, $rootScope) {
+angular.module('myApp').factory('messageService',
+    ["gameLogic",
+        function (gameLogic) {
+    var $log = log;
     this.sendMessage = function (message) {
       $log.info("Game sent message", message);
       $window.parent.postMessage(message, "*");

@@ -1,5 +1,5 @@
 window.angularTranslationsLoaded('en',{
-"RULES_OF_TICTACTOE":"Rules of yatzy",
+"RULES_OF_YATZY":"Rules of Yatzy",
 "RULES_SLIDE1":"Firstly, you can click on Roll 'Em button to roll dices.",
 "RULES_SLIDE2":"Then, after each roll, the player chooses which dice to keep, and which to reroll. A player may reroll some or all of the dice up to two times on a turn.",
 "RULES_SLIDE3":"The player must put a score or zero into a score box each turn.",
